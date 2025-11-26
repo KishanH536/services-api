@@ -7,7 +7,7 @@
     "version": "1.45.1",
     "title": "Platform Services API",
     "description": "An API for integration partners that provides tenant management, site and camera view configuration, and image submission endpoints for analysis processing.",
-    "summary": "A consolidated API for integrators",
+    "summary": "a consolidated API for integrators",
     "contact": {
       "name": "MCAP Platform Support",
       "email": "jonathan.whitall@motorolasolutions.com"
