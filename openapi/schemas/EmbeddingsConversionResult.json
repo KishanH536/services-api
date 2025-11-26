@@ -1,0 +1,69 @@
+{
+  "title": "Embeddings Conversion Result",
+  "x-stoplight": {
+    "id": "ffc84c11f79f2"
+  },
+  "description": "Contains results of analyzing an alarm against its currently defined set of rules",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json",
+      "description": "Properties from the base JSON:API data object",
+      "x-stoplight": {
+        "id": "85frtwmgy1048"
+      }
+    },
+    {
+      "type": "object",
+      "description": "Unique properties of a embeddings processing",
+      "properties": {
+        "data": {
+          "properties": {
+            "type": {
+              "description": "Indicates that this resource is an embeddings result.",
+              "const": "embeddings",
+              "x-stoplight": {
+                "id": "58hr19dd2hg9z"
+              }
+            },
+            "attributes": {
+              "properties": {
+                "embeddings": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "x-stoplight": {
+                      "id": "cp1vig5hwgvhu"
+                    }
+                  },
+                  "description": "Embeddings that are generated as a result of processing the input embeddings.",
+                  "x-stoplight": {
+                    "id": "07zsj2h4qkiqz"
+                  }
+                },
+                "version": {
+                  "description": "The version of the result embeddings",
+                  "type": "number",
+                  "x-stoplight": {
+                    "id": "fzqkc8lbuaqzf"
+                  }
+                }
+              },
+              "x-stoplight": {
+                "id": "zju6hqjvahtzk"
+              }
+            }
+          },
+          "x-stoplight": {
+            "id": "o7fpk4nnfy4d0"
+          }
+        }
+      },
+      "x-stoplight": {
+        "id": "5813maw8w5h4v"
+      }
+    }
+  ]
+}

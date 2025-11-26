@@ -1,0 +1,25 @@
+{
+  "title": "Bounding Box",
+  "description": "A bounding box for indicating where a specific object is located on a given image",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "./BoundingBox.json"
+    },
+    {
+      "properties": {
+        "objectType": {
+          "description": "Describes the type of object detected",
+          "type": "string",
+          "enum": [
+            "person",
+            "car",
+            "cyclist",
+            "truck",
+            "construction_vehicle"
+          ]
+        }
+      }
+    }
+  ]
+}

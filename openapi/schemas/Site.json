@@ -1,0 +1,19 @@
+{
+  "title": "Site",
+  "x-stoplight": {
+    "id": "55fc19wuo9whw"
+  },
+  "description": "A site represents a grouping of (usually co-located) cameras for a given client. A client may have many sites associated with it.\n\nIf, for instance, the client is a retailor, a site might be a particular store or campus of that retailor.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "$ref": "./SiteResource.json"
+        }
+      }
+    }
+  ]
+}

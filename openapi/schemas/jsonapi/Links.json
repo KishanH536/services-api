@@ -1,0 +1,24 @@
+{
+  "title": "Links",
+  "x-stoplight": {
+    "id": "oqo3vpgcuqs0d"
+  },
+  "description": "Base links object for JSON:API responses",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "./Link.json"
+  },
+  "examples": [
+    {
+      "self": "/example/12345"
+    },
+    {
+      "self": {
+        "href": "/example/12345",
+        "meta": {
+          "lastUpdatedAt": "2023-01-01T00:00:00Z"
+        }
+      }
+    }
+  ]
+}

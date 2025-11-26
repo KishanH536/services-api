@@ -1,0 +1,42 @@
+{
+  "title": "DisplayTokenResource",
+  "x-stoplight": {
+    "id": "zw7odyoritx94"
+  },
+  "description": "A single site resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json"
+    },
+    {
+      "properties": {
+        "id": {},
+        "type": {
+          "const": "token"
+        },
+        "attributes": {
+          "properties": {
+            "maskedToken": {
+              "description": "The last five characters of the token for display purposes to facilitate identification of the token",
+              "type": "string"
+            },
+            "creationDate": {
+              "description": "The date/time when the token was created",
+              "type": "string",
+              "format": "date-time"
+            },
+            "lastUpdateDate": {
+              "description": "The date/time when the token was last modified",
+              "type": "string",
+              "format": "date-time"
+            },
+            "note": {
+              "description": "A text description of the token to facilitate token identification and usage.",
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

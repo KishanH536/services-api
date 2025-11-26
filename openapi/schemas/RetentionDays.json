@@ -1,0 +1,8 @@
+{
+  "title": "Retention Period",
+  "description": "The number of days to retain data.",
+  "type": "integer",
+  "default": 30,
+  "maximum": 30,
+  "minimum": 0
+}

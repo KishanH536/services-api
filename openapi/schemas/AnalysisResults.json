@@ -1,0 +1,19 @@
+{
+  "title": "AnalysisResults",
+  "description": "A collection of the analysis result resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/SuccessCollection.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "./AnalysisResultResource.json"
+          }
+        }
+      }
+    }
+  ]
+}

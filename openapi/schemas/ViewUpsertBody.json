@@ -1,0 +1,33 @@
+{
+  "title": "View Parameters",
+  "description": "Parameters to send when updating or creating a view.",
+  "type": "object",
+  "required": [
+    "displayName"
+  ],
+  "properties": {
+    "displayName": {
+      "$ref": "./DisplayName.json",
+      "description": "A display name for the view."
+    },
+    "masks": {
+      "description": "The masks for the view.",
+      "type": "array",
+      "items": {
+        "$ref": "./Mask.json"
+      }
+    },
+    "thermal": {
+      "type": "boolean",
+      "x-stoplight": {
+        "id": "7ltnxnsufzu37"
+      },
+      "default": false,
+      "description": "Whether the view sends images from thermal camera sources."
+    },
+    "features": {
+      "$ref": "./FeaturesRequest.json",
+      "description": "An object containing the enabled features for the view. If this property is not included, the default behaviour is to enable object detection only, for people and vehicles."
+    }
+  }
+}

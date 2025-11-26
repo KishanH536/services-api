@@ -1,0 +1,28 @@
+{
+  "name": "Services API",
+  "description": "",
+  "spectralExtends": [],
+  "extends": [
+    "cHJqOjEyMzU4Ng"
+  ],
+  "formats": [
+    "oas2",
+    "oas3",
+    "oas3.0",
+    "oas3.1"
+  ],
+  "aliases": {},
+  "rules": {},
+  "inheritedOverrides": {
+    "openapi-tags-alphabetical": {
+      "severity": "info"
+    },
+    "contact-url": {
+      "severity": "off"
+    },
+    "info-license": {
+      "severity": "off"
+    }
+  },
+  "extendedDefault": true
+}

@@ -1,0 +1,15 @@
+{
+  "title": "RelationshipToOne",
+  "x-stoplight": {
+    "id": "y41dk2nx5c92x"
+  },
+  "description": "References to other resource objects in a to-one (\"relationship\"). Relationships can be specified by including a member in a resource's links object.",
+  "anyOf": [
+    {
+      "$ref": "./Empty.json"
+    },
+    {
+      "$ref": "./Linkage.json"
+    }
+  ]
+}

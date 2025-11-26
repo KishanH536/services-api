@@ -1,0 +1,16 @@
+{
+  "title": "View",
+  "description": "A view represents a single, fixed view from a video source over time.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "$ref": "./ViewResource.json"
+        }
+      }
+    }
+  ]
+}

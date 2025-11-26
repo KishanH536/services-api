@@ -1,0 +1,17 @@
+{
+  "title": "RelationshipLinks",
+  "x-stoplight": {
+    "id": "20vpadctv0hxe"
+  },
+  "description": "A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object.",
+  "type": "object",
+  "properties": {
+    "self": {
+      "$ref": "./Link.json"
+    },
+    "related": {
+      "$ref": "./Link.json"
+    }
+  },
+  "additionalProperties": true
+}

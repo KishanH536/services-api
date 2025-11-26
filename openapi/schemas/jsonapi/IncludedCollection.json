@@ -1,0 +1,12 @@
+{
+  "title": "Included Collection",
+  "x-stoplight": {
+    "id": "1gkbmuhm0sr54"
+  },
+  "description": "An array of resource objects, an array of resource identifier objects, or an empty array ([]), for resources related to the resources targeted by the request.",
+  "type": "array",
+  "items": {
+    "$ref": "./Resource.json"
+  },
+  "uniqueItems": true
+}

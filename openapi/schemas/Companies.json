@@ -1,0 +1,19 @@
+{
+  "title": "Companies",
+  "description": "A collection of the company resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/SuccessCollection.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "./CompanyResource.json"
+          }
+        }
+      }
+    }
+  ]
+}

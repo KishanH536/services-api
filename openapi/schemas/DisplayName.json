@@ -1,0 +1,14 @@
+{
+  "title": "Display Name",
+  "x-stoplight": {
+    "id": "a2924spib4zg6"
+  },
+  "description": "The human-readable name for this element",
+  "type": "string",
+  "minLength": 1,
+  "maxLength": 100,
+  "examples": [
+    "My Client Name",
+    "Omaha Site"
+  ]
+}

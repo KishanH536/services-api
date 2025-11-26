@@ -1,0 +1,88 @@
+{
+  "title": "Features Response Object",
+  "description": "An object containing an attribute for each enabled feature.",
+  "type": "object",
+  "properties": {
+    "sceneChangeDetection": {
+      "description": "Scene change detection feature information.",
+      "type": "object",
+      "properties": {
+        "dayReferenceImage": {
+          "description": "A `links` object containing a single `http://calipsa.io/relation/current-image` attribute, which is the individual link object specifying the location of the reference image. This link object contains an `href` attribute, which is a link to the view's day reference image, and a `meta` atrribute, which is an object containing the `lastUpdatedAt` date-time attribute, indicating when the image was last updated. If there is no day reference image associated with this view, the `dayReferenceImage` object will not be present.",
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "./jsonapi/Links.json"
+            }
+          }
+        },
+        "nightReferenceImage": {
+          "description": "A `links` object containing a single `http://calipsa.io/relation/current-image` attribute, which is the individual link object specifying the location of the reference image. This link object contains an `href` attribute, which is a link to the view's night reference image, and a `meta` atrribute, which is an object containing the `lastUpdatedAt` date-time attribute, indicating when the image was last updated. If there is no day reference image associated with this view, the `dayReferenceImage` object will not be present.",
+          "type": "object",
+          "properties": {
+            "links": {
+              "$ref": "./jsonapi/Links.json"
+            }
+          }
+        }
+      }
+    },
+    "objectDetection": {
+      "description": "Object detection feature information",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "humanDetection",
+        "vehicleDetection"
+      ],
+      "properties": {
+        "humanDetection": {
+          "description": "Whether human detection is enabled for the object detection feature.",
+          "type": "boolean"
+        },
+        "vehicleDetection": {
+          "description": "Whether vehicle detection is enabled for the object detection feature.",
+          "type": "boolean"
+        }
+      }
+    },
+    "forensic": {
+      "description": "Forensic feature information",
+      "type": "object",
+      "properties": {
+        "retentionTier": {
+          "type": "integer",
+          "minimum": 7,
+          "maximum": 30,
+          "default": 30,
+          "description": "This indicates how long in days the forensic search system will retain data before it becomes inaccessible.",
+          "readOnly": true
+        }
+      }
+    },
+    "vehicleAnalysis": {
+      "description": "Vehicle analysis feature information",
+      "type": "object",
+      "$ref": "./VehicleAnalysis.json"
+    },
+    "personAnalysis": {
+      "description": "Person analysis feature information",
+      "type": "object"
+    },
+    "sceneClassification": {
+      "description": "Scene classification feature information",
+      "type": "object"
+    },
+    "multipleRiskAnalysis": {
+      "description": "Multiple risk analysis feature information",
+      "type": "object"
+    },
+    "advancedRules": {
+      "description": "Advanced rule configuration for the advanced detection feature.",
+      "type": "array",
+      "items": {
+        "$ref": "./AdvancedRule.json"
+      }
+    }
+  }
+}

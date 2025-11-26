@@ -1,0 +1,29 @@
+{
+  "title": "Mask",
+  "description": "A collection of vertices, forming a polygon, inside which detections should not be performed. The edges of the polygon connect adjacent vertices in the array, and and edge connects the first and last vertex in the array. The area of the mask is determined by scanning the view (any direction), toggling inclusion/exclusion state when an edge is crossed.",
+  "type": "array",
+  "minItems": 3,
+  "items": {
+    "$ref": "./Coordinate.json"
+  },
+  "examples": [
+    [
+      [
+        0,
+        0
+      ],
+      [
+        0.5,
+        0
+      ],
+      [
+        0.4,
+        0.3
+      ],
+      [
+        0,
+        0.6
+      ]
+    ]
+  ]
+}

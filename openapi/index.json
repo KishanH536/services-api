@@ -1,0 +1,4871 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": {
+    "id": "gd88dmq655hv1"
+  },
+  "info": {
+    "version": "1.45.1",
+    "title": "Platform Services API",
+    "description": "An API for integration partners that provides tenant management, site and camera view configuration, and image submission endpoints for analysis processing.",
+    "summary": "A consolidated API for integrators",
+    "contact": {
+      "name": "MCAP Platform Support",
+      "email": "jonathan.whitall@motorolasolutions.com"
+    }
+  },
+  "x-topics": [
+    {
+      "title": "Basic Concepts",
+      "content": {
+        "$ref": "docs/topics/01-basic-concepts.md"
+      }
+    },
+    {
+      "title": "Configuring Companies and their Resources",
+      "content": {
+        "$ref": "./docs/topics/02-company-configuration.md"
+      }
+    },
+    {
+      "title": "Features: Overview",
+      "content": {
+        "$ref": "./docs/topics/03-feature-configuration.md"
+      }
+    },
+    {
+      "title": "Requests, Responses, and Relations",
+      "content": {
+        "$ref": "./docs/topics/04-requests-responses-relations.md"
+      }
+    },
+    {
+      "title": "Feature: Scene Change Detection",
+      "content": {
+        "$ref": "./docs/topics/05-scene-change-detection.md"
+      }
+    },
+    {
+      "title": "Feature: Vehicle Analysis",
+      "content": {
+        "$ref": "./docs/topics/06-vehicle-analysis.md"
+      }
+    },
+    {
+      "title": "Feature: Person Analysis",
+      "content": {
+        "$ref": "./docs/topics/07-person-analysis.md"
+      }
+    },
+    {
+      "title": "Feature: Multiple Risk Analysis",
+      "content": {
+        "$ref": "./docs/topics/08-multiple-risk-analysis.md"
+      }
+    },
+    {
+      "title": "Feature: Gun Detection",
+      "content": {
+        "$ref": "./docs/topics/09-gun-detection.md"
+      }
+    },
+    {
+      "title": "Feature: Face Analysis",
+      "content": {
+        "$ref": "./docs/topics/10-face-analysis.md"
+      }
+    },
+    {
+      "title": "Appendix: HTTP Usage Assumptions",
+      "content": {
+        "$ref": "./docs/topics/11-http-usage-assumptions.md"
+      }
+    },
+    {
+      "title": "Appendix: HTTP Usage Assumptions",
+      "content": {
+        "$ref": "./docs/topics/20-data-type-details.md"
+      }
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.mcap-us-01.motorolasolutions.com/services",
+      "description": "Production server (US Commercial)"
+    },
+    {
+      "url": "https://api.mcap-gov-us-01.motorolasolutions.com/services",
+      "description": "Production server (US Gov)"
+    },
+    {
+      "url": "https://mcap-api.int.calipsa.info/services",
+      "description": "Integration server"
+    },
+    {
+      "url": "https://mcap-api.calipsa.biz/services",
+      "description": "Development server"
+    },
+    {
+      "url": "http://localhost:8080/services",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/clients": {
+      "get": {
+        "summary": "Get Clients",
+        "operationId": "getClients",
+        "responses": {
+          "200": {
+            "description": "Returned when the clients were successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Clients.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "684200c1-4901-458a-834b-0b6bb91ff19c",
+                          "type": "client",
+                          "attributes": {
+                            "displayName": "Client A",
+                            "integratorId": "my-client-id"
+                          },
+                          "links": {
+                            "self": "/services/clients/684200c1-4901-458a-834b-0b6bb91ff19c"
+                          }
+                        }
+                      ],
+                      "links": {
+                        "self": "/services/clients"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get all clients for a company.",
+        "x-stoplight": {
+          "id": "2m5vvl4ld9zom"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "post": {
+        "summary": "Create Client",
+        "operationId": "addClient",
+        "requestBody": {
+          "description": "Create a Client given a client display name",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "description": "The name of the client",
+                    "$ref": "./schemas/DisplayName.json",
+                    "examples": [
+                      "Client_A"
+                    ]
+                  }
+                },
+                "required": [
+                  "displayName"
+                ]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Client_A"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for creating a client.",
+        "responses": {
+          "201": {
+            "description": "Returned when the client was successfully created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Client.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "0d910645-1e71-4713-8ba3-bda546f331e3",
+                        "type": "client",
+                        "attributes": {
+                          "integratorId": "Client_A",
+                          "displayName": "Client_A"
+                        },
+                        "links": {
+                          "self": "/services/clients/0d910645-1e71-4713-8ba3-bda546f331e3"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the display name is invalid, an error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Please specify a valid display name (fewer than 100 characters)"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "ojfxc3fd5ouev"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/clients/{clientId}": {
+      "parameters": [
+        {
+          "name": "clientId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the client resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "delete": {
+        "summary": "Delete Client",
+        "operationId": "deleteClient",
+        "responses": {
+          "204": {
+            "description": "Returned when the client was successfully deleted"
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The client was not found or was already deleted",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete a client given the client ID.",
+        "x-stoplight": {
+          "id": "ejwlxtwkuzyya"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "get": {
+        "summary": "Get Client",
+        "operationId": "getClient",
+        "responses": {
+          "200": {
+            "description": "Returned when the client was successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Client.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                        "type": "client",
+                        "attributes": {
+                          "displayName": "Client A"
+                        },
+                        "links": {
+                          "self": "/services/clients/23ab847c-1aac-4976-a12c-8242882d8fc9"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The client was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a client given the client ID.",
+        "x-stoplight": {
+          "id": "23lwredm7t2d8"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/clients/{clientId}/sites": {
+      "parameters": [
+        {
+          "name": "clientId",
+          "description": "The client ID that the site is associated to.",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Sites",
+        "operationId": "getSites",
+        "responses": {
+          "200": {
+            "description": "Returned when the sites were successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Sites.json"
+                },
+                "examples": {
+                  "Basic site": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                          "type": "site",
+                          "attributes": {
+                            "displayName": "Site A",
+                            "integratorId": "my-site-id",
+                            "timeZone": "Canada/Pacific"
+                          },
+                          "links": {
+                            "self": "/sites/23ab847c-1aac-4976-a12c-8242882d8fc9"
+                          }
+                        }
+                      ],
+                      "links": {
+                        "self": "/services/clients/a83e6a96-9f5c-45ae-94b3-ba0a0cedd560/sites"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An invalid Client ID was provided.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Please specify a valid client ID"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The client was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get all sites for a client given the client ID. The sites are returned in alphabetical order by displayName.",
+        "x-stoplight": {
+          "id": "u80o3o6y413t7"
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "shared",
+            "deprecated": true,
+            "description": "This parameter is used when filtering sites based on sites that have been shared with a user through creation of a Site Share resource. Setting the value to `true` will return only those sites that have been shared with the user who made the request. When not used the default value is `false`. It is no longer possible to share sites through MCAP, so this query parameter has been deprecated."
+          }
+        ],
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "post": {
+        "summary": "Create Site",
+        "operationId": "addSite",
+        "requestBody": {
+          "description": "Create a site given a client ID and site name",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "siteName"
+                ],
+                "properties": {
+                  "siteName": {
+                    "$ref": "./schemas/DisplayName.json",
+                    "description": "The name of the site"
+                  },
+                  "timeZone": {
+                    "description": "The name of the site's time zone (as listed in the official tz database). If no `timeZone` is provided, the default site time zone for the company will be used.",
+                    "type": "string",
+                    "format": "timeZone",
+                    "examples": [
+                      "America/Chicago",
+                      "Europe/London"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "siteName": "Site A",
+                    "timeZone": "America/Chicago"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for creating a site.",
+        "responses": {
+          "201": {
+            "description": "Returned when the site was successfully created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Site.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "c6169322-88a0-4a63-ad21-75d241772143",
+                    "type": "site",
+                    "attributes": {
+                      "displayName": "Site A",
+                      "timeZone": "America/Chicago"
+                    },
+                    "links": {
+                      "self": "/services/sites/c6169322-88a0-4a63-ad21-75d241772143"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "1oip44sw0yacd"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/sites/{siteId}": {
+      "parameters": [
+        {
+          "name": "siteId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the site resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Site",
+        "operationId": "getSite",
+        "responses": {
+          "200": {
+            "description": "Returned when the site was successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Site.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "f2443c02-3664-4bee-9a02-0ce1d312b6de",
+                    "type": "site",
+                    "attributes": {
+                      "displayName": "Site A",
+                      "timeZone": "Canada/Pacific"
+                    },
+                    "links": {
+                      "self": "/services/sites/f2443c02-3664-4bee-9a02-0ce1d312b6de"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a site given the site ID.",
+        "x-stoplight": {
+          "id": "ppc2nay52c6tq"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "put": {
+        "summary": "Update Site",
+        "operationId": "updateSite",
+        "requestBody": {
+          "description": "Update a site with one or both of the following parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "siteName"
+                ],
+                "properties": {
+                  "siteName": {
+                    "$ref": "./schemas/DisplayName.json",
+                    "description": "The name of the site"
+                  },
+                  "timeZone": {
+                    "description": "The name of the site's time zone (as listed in the official tz database). If no `timeZone` is provided, the default site time zone for the company will be used.",
+                    "type": "string",
+                    "format": "timeZone",
+                    "examples": [
+                      "America/Chicago",
+                      "Europe/London"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "siteName": "Site A",
+                    "timeZone": "America/Chicago"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when the site was successfully updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Site.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "f2443c02-3664-4bee-9a02-0ce1d312b6de",
+                    "type": "site",
+                    "attributes": {
+                      "displayName": "Site A Renamed",
+                      "timeZone": "Canada/Pacific"
+                    },
+                    "links": {
+                      "self": "/services/sites/f2443c02-3664-4bee-9a02-0ce1d312b6de"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site specified by the `siteId` parameter was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "v1u8krxxeu0e3"
+        },
+        "description": "This endpoint allows for updating a site with a given site ID.",
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Site",
+        "operationId": "deleteSite",
+        "responses": {
+          "204": {
+            "description": "Returned when the site was successfully deleted"
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site was not found or was already deleted",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete a site given the site ID.",
+        "x-stoplight": {
+          "id": "uh47x8yhk7mse"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/sites/{siteId}/views": {
+      "get": {
+        "summary": "Get Views",
+        "operationId": "getViews",
+        "responses": {
+          "200": {
+            "description": "Returned when the views in the site were successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Views.json"
+                },
+                "examples": {
+                  "Masks": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                          "type": "view",
+                          "attributes": {
+                            "integratorId": "BigLongSerialNumber19382",
+                            "displayName": "Alley Door",
+                            "snapshotSet": false,
+                            "masks": [
+                              [
+                                [
+                                  0.1,
+                                  0.1
+                                ],
+                                [
+                                  0.4,
+                                  0.1
+                                ],
+                                [
+                                  0.4,
+                                  0.4
+                                ],
+                                [
+                                  0.1,
+                                  0.4
+                                ]
+                              ]
+                            ],
+                            "thermal": false
+                          }
+                        }
+                      ],
+                      "links": {
+                        "self": "/services/sites/1b06106a-d8c6-49e7-948e-4e30ba0877b6/views"
+                      }
+                    }
+                  },
+                  "ExampleCam": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "263befc1-8bf5-4ec9-9d4b-d5175f9274ac",
+                          "type": "view",
+                          "attributes": {
+                            "integratorId": "test-camera-model",
+                            "displayName": "test-camera-model",
+                            "createdAt": "2023-09-15T23:22:31.041Z",
+                            "updatedAt": "2023-09-15T23:22:31.172Z",
+                            "active": true,
+                            "snapshotSet": false,
+                            "masks": [],
+                            "thermal": false,
+                            "features": {
+                              "sceneChangeDetection": {}
+                            }
+                          },
+                          "links": {
+                            "self": "/services/views/263befc1-8bf5-4ec9-9d4b-d5175f9274ac"
+                          }
+                        },
+                        {
+                          "id": "7ba3b47f-0df7-440a-a256-dbe5239b310d",
+                          "type": "view",
+                          "attributes": {
+                            "integratorId": "test-camera",
+                            "displayName": "test-camera",
+                            "createdAt": "2023-09-15T22:41:37.016Z",
+                            "updatedAt": "2023-09-15T22:41:37.155Z",
+                            "active": true,
+                            "snapshotSet": false,
+                            "masks": [],
+                            "thermal": false,
+                            "features": {
+                              "sceneChangeDetection": {}
+                            }
+                          },
+                          "links": {
+                            "self": "/services/views/7ba3b47f-0df7-440a-a256-dbe5239b310d"
+                          }
+                        }
+                      ],
+                      "links": {
+                        "self": "/services/sites/89a011f4-ebd8-4951-9dd4-08f5385c2e2f/views"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get all views in a site. The views are returned in alphabetical order by displayName.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "include",
+            "description": "Indicates which relationships to include with the returned data. Currently \"hardware\" is the only allowed value.",
+            "deprecated": true
+          }
+        ],
+        "x-stoplight": {
+          "id": "h4kwih6sa0hrk"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "post": {
+        "summary": "Create View",
+        "operationId": "addView",
+        "requestBody": {
+          "description": "Create a view for a given site ID",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/ViewUpsertBody.json"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Camera_A"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for creating a view for a given site ID. Once a view is created, cameras may POST analysis requests to this view in the form of an image array.",
+        "responses": {
+          "201": {
+            "description": "Returned when the camera was successfully created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/View.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "c6169322-88a0-4a63-ad21-75d241772143",
+                    "type": "view",
+                    "attributes": {
+                      "integratorId": "0f6074b9-28ac-40b2-bf6d-ced3bbbbf42c",
+                      "displayName": "Camera_A",
+                      "snapshotSet": false,
+                      "masks": [],
+                      "thermal": false
+                    },
+                    "links": {
+                      "self": "/services/views/c6169322-88a0-4a63-ad21-75d241772143"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "detail": "must have required property 'displayName'",
+                          "meta": {
+                            "instancePath": "/requestBody",
+                            "schemaPath": "#/properties/requestBody/required",
+                            "keyword": "required",
+                            "params": {
+                              "missingProperty": "displayName"
+                            }
+                          },
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The features being set for this view are not allowed by company capabilities",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site specified by the `siteId` parameter was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "pa51od26vslzr"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          },
+          "name": "siteId",
+          "in": "path",
+          "required": true,
+          "description": "The site ID for this view"
+        }
+      ]
+    },
+    "/views/{viewId}": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the view resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get View",
+        "operationId": "getView",
+        "responses": {
+          "200": {
+            "description": "Returned when the view was successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/View.json"
+                },
+                "examples": {
+                  "Scene Change": {
+                    "value": {
+                      "data": {
+                        "type": "view",
+                        "id": "de75623f-d347-4203-b52b-1953fe0d9b51",
+                        "attributes": {
+                          "integratorId": "sn31789-3891",
+                          "displayName": "My Client Name",
+                          "snapshotSet": true,
+                          "thermal": true,
+                          "features": {
+                            "sceneChangeDetection": {
+                              "dayReferenceImage": {
+                                "links": {
+                                  "http://calipsa.io/relation/current-image": {
+                                    "href": "/example/12345",
+                                    "meta": {
+                                      "lastUpdatedAt": "2023-01-01T00:00:00.000Z"
+                                    }
+                                  }
+                                }
+                              },
+                              "nightReferenceImage": {
+                                "links": {
+                                  "http://calipsa.io/relation/current-image": {
+                                    "href": "/example/12345",
+                                    "meta": {
+                                      "lastUpdatedAt": "2023-01-01T00:00:00.000Z"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "active": true,
+                          "masks": []
+                        },
+                        "links": {
+                          "self": "/example/12345"
+                        }
+                      },
+                      "links": {
+                        "self": "/example/12345"
+                      }
+                    }
+                  },
+                  "Loitering": {
+                    "value": {
+                      "data": {
+                        "type": "view",
+                        "id": "de75623f-d347-4203-b52b-1953fe0d9b51",
+                        "attributes": {
+                          "integratorId": "sn31789-3891",
+                          "displayName": "My Client Name",
+                          "snapshotSet": true,
+                          "thermal": true,
+                          "features": {
+                            "sceneChangeDetection": {
+                              "dayReferenceImage": {
+                                "links": {
+                                  "self": "/example/12345"
+                                }
+                              },
+                              "nightReferenceImage": {
+                                "links": {
+                                  "self": "/example/12345"
+                                }
+                              }
+                            },
+                            "objectDetection": {
+                              "humanDetection": true,
+                              "vehicleDetection": true
+                            },
+                            "forensic": {},
+                            "advancedRules": [
+                              {
+                                "integratorId": "string",
+                                "name": "string",
+                                "objectType": "person",
+                                "categories": [
+                                  "person"
+                                ],
+                                "zones": [
+                                  [
+                                    [
+                                      0,
+                                      0
+                                    ],
+                                    [
+                                      0.5,
+                                      0
+                                    ],
+                                    [
+                                      0.5,
+                                      1
+                                    ],
+                                    [
+                                      0,
+                                      1
+                                    ]
+                                  ]
+                                ],
+                                "loiteringDetection": {
+                                  "period": 30
+                                }
+                              }
+                            ]
+                          },
+                          "active": true,
+                          "masks": []
+                        },
+                        "links": {
+                          "self": "/example/12345"
+                        }
+                      },
+                      "links": {
+                        "self": "/example/12345"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The view was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a view given the view ID.",
+        "x-stoplight": {
+          "id": "luzbtsuazcahr"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "put": {
+        "summary": "Update View",
+        "operationId": "updateView",
+        "requestBody": {
+          "description": "Update a view for a given view ID",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/ViewUpsertBody.json"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Camera_A"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for updating a view with a given view ID.",
+        "responses": {
+          "200": {
+            "description": "Returned when the camera was successfully updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/View.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "c6169322-88a0-4a63-ad21-75d241772143",
+                    "type": "view",
+                    "attributes": {
+                      "integratorId": "0f6074b9-28ac-40b2-bf6d-ced3bbbbf42c",
+                      "displayName": "Camera_A",
+                      "snapshotSet": false,
+                      "masks": [],
+                      "thermal": false
+                    },
+                    "links": {
+                      "self": "/services/views/c6169322-88a0-4a63-ad21-75d241772143"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The features being set for this view are not allowed by company capabilities",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The view specified by the `viewId` parameter was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "n44h5wyba4ku6"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      },
+      "delete": {
+        "summary": "Delete View",
+        "operationId": "deleteView",
+        "responses": {
+          "204": {
+            "description": "Returned when the view was successfully deleted"
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The view was not found or was already deleted",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete a view given the view ID.",
+        "x-stoplight": {
+          "id": "b6cdkvfo2t3je"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/views/{viewId}/snapshot": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the view resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Snapshot for View",
+        "operationId": "getSnapshot",
+        "responses": {
+          "301": {
+            "description": "Returned when a snapshot URL for the specified view was successfully created. Client should follow the redirect to get the snapshot.",
+            "content": {},
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "URL for the snapshot image"
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "image/jpeg (content returned after following the redirect)"
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "max-age of the snapshot image URL"
+              }
+            }
+          },
+          "404": {
+            "description": "The specified snapshot view was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the snapshot for a view given the view ID. This endpoint generates an S3 pre-signed URL for the snapshot requested and returns a 301 redirect response with that URL in the location header.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "night"
+              ]
+            },
+            "in": "query",
+            "name": "refImage",
+            "description": "If set to `day`, fetch the view's daytime reference image instead of its snapshot. If set to `night`, fetch the view's night-time reference image instead of its snapshot."
+          }
+        ],
+        "x-stoplight": {
+          "id": "m51q0eicbfrou"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/views/{viewId}/alarms": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "The camera view ID that this analysis is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Perform Full Frame Analysis (Images)",
+        "operationId": "analyzeAlarm",
+        "requestBody": {
+          "description": "Send a series of up to 6 JPEG images for analysis",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "saveAlarm": {
+                    "description": "This option is deprecated. Alarms are not saved using this option on the MCAP platform.",
+                    "type": "boolean",
+                    "deprecated": true
+                  },
+                  "options": {
+                    "$ref": "./schemas/AlarmOptions.json"
+                  },
+                  "alarmImages": {
+                    "description": "A series of images in JPEG format. Minimum image dimensions are 320x240.",
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AlarmAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid",
+                        "objectDetection": {
+                          "boundingBoxes": [
+                            [
+                              {
+                                "x1": 0.367,
+                                "y1": 0.479,
+                                "x2": 0.42,
+                                "y2": 0.658,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.427,
+                                "y1": 0.438,
+                                "x2": 0.472,
+                                "y2": 0.596,
+                                "objectType": "person"
+                              }
+                            ],
+                            [
+                              {
+                                "x1": 0.416,
+                                "y1": 0.506,
+                                "x2": 0.473,
+                                "y2": 0.727,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.492,
+                                "y1": 0.481,
+                                "x2": 0.536,
+                                "y2": 0.656,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.219,
+                                "y1": 0.504,
+                                "x2": 0.252,
+                                "y2": 0.59,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.37,
+                                "y1": 0.475,
+                                "x2": 0.411,
+                                "y2": 0.623,
+                                "objectType": "person"
+                              }
+                            ],
+                            []
+                          ]
+                        }
+                      },
+                      "sceneChange": {
+                        "result": "not_valid"
+                      }
+                    },
+                    "links": {
+                      "http://calipsa.io/relation/alarm": "https://api.calipsa.io/alarm/-2147434948",
+                      "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages",
+                      "http://calipsa.io/relation/modifiedimages": "https://api.calipsa.io/alarm/-2147434948/modifiedimages",
+                      "http://calipsa.io/relation/alarmpage": "https://m.calipsa.io/cams/alarms/-2147434948"
+                    }
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "description": "If too many images are included in the request, or if an invalid set of options are provided, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Too many images uploaded. Maximum number of images is 6."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found for specified cameraIntegratorId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Resource not found for specified cameraIntegratorId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request camera was perviously registered, but has since been deleted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "410",
+                          "detail": "Resource has been deleted"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of images representing a small point in time. The platform will return an analysis document in response which will indicate what kind of analytics were performed and whether they detected anything they were configured to look for.\n\nThe images in the series must be the same size.",
+        "x-stoplight": {
+          "id": "yqiica7lxcut9"
+        },
+        "tags": [
+          "Analytics via Platform ID"
+        ]
+      }
+    },
+    "/views/{viewId}/analyses": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "The camera view ID that this analysis is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Perform Full Frame Analysis (Image URLs)",
+        "operationId": "analyzeImages",
+        "requestBody": {
+          "description": "Send a series of up to 32 JPEG image URLs for analysis",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/AlarmOptions.json"
+                  },
+                  "analysisImageUrls": {
+                    "$ref": "./schemas/AnalysisImageUrls.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AlarmAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "ae0ca651-411a-48f1-9a6c-4c1c334a032b",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid",
+                        "vehicleAnalysis": [
+                          {
+                            "vehicles": [
+                              {
+                                "boundingBox": {
+                                  "x1": 0.01698,
+                                  "y1": 0.54844,
+                                  "x2": 0.36779,
+                                  "y2": 0.93047
+                                },
+                                "objectLabel": "car",
+                                "attributes": {
+                                  "vehicleType": "sedan",
+                                  "makeModel": "Tesla, Model X",
+                                  "color": [
+                                    "white"
+                                  ]
+                                }
+                              },
+                              {
+                                "boundingBox": {
+                                  "x1": 0.67608,
+                                  "y1": 0.58516,
+                                  "x2": 0.9405,
+                                  "y2": 0.88828
+                                },
+                                "objectLabel": "car",
+                                "attributes": {
+                                  "vehicleType": "sedan",
+                                  "makeModel": "Nissan, Sentra",
+                                  "color": [
+                                    "gray"
+                                  ]
+                                }
+                              },
+                              {
+                                "boundingBox": {
+                                  "x1": 0.43389,
+                                  "y1": 0.57969,
+                                  "x2": 0.63942,
+                                  "y2": 0.89688
+                                },
+                                "objectLabel": "car",
+                                "attributes": {
+                                  "vehicleType": "sedan",
+                                  "makeModel": "Toyota, Corolla",
+                                  "color": [
+                                    "white",
+                                    "silver"
+                                  ]
+                                }
+                              }
+                            ],
+                            "plates": [
+                              {
+                                "boundingBox": {
+                                  "x1": 0.07858,
+                                  "y1": 0.69219,
+                                  "x2": 0.13717,
+                                  "y2": 0.75
+                                },
+                                "attributes": {
+                                  "quality": "readable",
+                                  "text": "1BUBALE",
+                                  "state": "WA"
+                                },
+                                "vehicleId": 0
+                              },
+                              {
+                                "boundingBox": {
+                                  "x1": 0.51352,
+                                  "y1": 0.71484,
+                                  "x2": 0.5634,
+                                  "y2": 0.76328
+                                },
+                                "attributes": {
+                                  "quality": "readable",
+                                  "text": "8DTK155",
+                                  "state": "CA"
+                                },
+                                "vehicleId": 2
+                              },
+                              {
+                                "boundingBox": {
+                                  "x1": 0.85817,
+                                  "y1": 0.73203,
+                                  "x2": 0.90625,
+                                  "y2": 0.77578
+                                },
+                                "attributes": {
+                                  "quality": "readable",
+                                  "text": "7YNY978",
+                                  "state": "CA"
+                                },
+                                "vehicleId": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "sceneChange": {
+                        "result": "not_performed",
+                        "reason": {
+                          "notEligible": {
+                            "isTampering": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found for specified cameraIntegratorId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Resource not found for specified cameraIntegratorId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request camera was perviously registered, but has since been deleted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "410",
+                          "detail": "Resource has been deleted"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of image URLs. The platform will retrieve the images and return an analysis document in response which will indicate what kind of analytics were performed and whether they detected anything they were configured to look for.\n\nThe platform will also publish the results to a Kafka message broker for non-real-time consumption.\n\nThe images in the series must be the same size.",
+        "tags": [
+          "Analytics via Platform ID"
+        ],
+        "x-stoplight": {
+          "id": "mw02xg0es9gbi"
+        }
+      }
+    },
+    "/views/{viewId}/chips": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "The view ID that this chip detection is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Perform Chip Analysis",
+        "operationId": "analyzeChip",
+        "requestBody": {
+          "description": "Send a series of up to 6 JPEG images or a list of up to 8 image URLs for analysis",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/ChipsOptions.json"
+                  },
+                  "chipImages": {
+                    "$ref": "./schemas/ChipsImages.json"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/ChipsOptions.json"
+                  },
+                  "chipUrls": {
+                    "$ref": "./schemas/ChipUrls.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful chip analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/ChipAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid"
+                      },
+                      "sceneChange": {
+                        "result": "not_valid"
+                      }
+                    },
+                    "links": {
+                      "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages"
+                    }
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "description": "If too many images are included in the request, or if an invalid set of options are provided, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Too many images uploaded. Maximum number of images is 6."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found for specified cameraIntegratorId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Resource not found for specified cameraIntegratorId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request camera was perviously registered, but has since been deleted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "410",
+                          "detail": "Resource has been deleted"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of images representing a small point in time. The platform will return an analysis document in response which will indicate what kind of analytics were performed and whether they detected anything they were configured to look for.\n\nThe images in the series must be the same size.",
+        "x-stoplight": {
+          "id": "5439udvok7y1v"
+        },
+        "tags": [
+          "Analytics via Platform ID"
+        ]
+      }
+    },
+    "/integrator/clients": {
+      "parameters": [],
+      "get": {
+        "summary": "Get Clients (Integrator)",
+        "operationId": "getClientsIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the clients were successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Clients.json"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "684200c1-4901-458a-834b-0b6bb91ff19c",
+                      "type": "client",
+                      "attributes": {
+                        "displayName": "Client A",
+                        "integratorId": "my-client-id"
+                      },
+                      "links": {
+                        "self": "/services/clients/684200c1-4901-458a-834b-0b6bb91ff19c"
+                      }
+                    }
+                  ],
+                  "links": {
+                    "self": "/services/integrator/clients"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Get all clients for a company.",
+        "x-stoplight": {
+          "id": "ty51i3z8xfoai"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/clients/{clientIntegratorId}": {
+      "parameters": [
+        {
+          "name": "clientIntegratorId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the client resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Client (Integrator)",
+        "operationId": "getClientIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the client was successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Client.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                    "type": "client",
+                    "attributes": {
+                      "integratorId": "Client_A",
+                      "displayName": "Client A"
+                    },
+                    "links": {
+                      "self": "/services/integrator/clients/my-client-id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The client was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a client given the client integrator ID.",
+        "x-stoplight": {
+          "id": "481d8vv2il6mo"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      },
+      "put": {
+        "summary": "Create/Update Client (Integrator)",
+        "operationId": "addClientIntegrator",
+        "requestBody": {
+          "description": "Create or update a client using a simple syntax",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "$ref": "./schemas/DisplayName.json"
+                  }
+                },
+                "required": [
+                  "displayName"
+                ]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "TryIt 4 Less"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for the management of a client. If the client does not already exist when this endpoint is called, it will be created automatically.",
+        "responses": {
+          "200": {
+            "description": "Returned when the client was successfully updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Client.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "b012b545-4e9f-429d-9410-544229b9670b",
+                    "type": "client",
+                    "attributes": {
+                      "integratorId": "TryIt",
+                      "displayName": "TryIt 4 Less"
+                    },
+                    "links": {
+                      "self": "/services/integrator/clients/TryIt"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returned when the client was successfully created and did not previously exist",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Client.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "b012b545-4e9f-429d-9410-544229b9670b",
+                    "type": "client",
+                    "attributes": {
+                      "integratorId": "TryIt",
+                      "displayName": "TryIt 4 Less"
+                    },
+                    "links": {
+                      "self": "/services/integrator/clients/TryIt"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "The location of the newly-created resource."
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "hxkl2x9aia51b"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Client (Integrator)",
+        "operationId": "deleteClientIntegrator",
+        "responses": {
+          "204": {
+            "description": "Returned when the client was successfully deleted"
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The client was not found or was already deleted",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete a client given the client integrator ID.",
+        "x-stoplight": {
+          "id": "vqd2f5ypzfp6o"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/clients/{clientIntegratorId}/sites": {
+      "parameters": [
+        {
+          "name": "clientIntegratorId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the client resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Sites (Integrator)",
+        "operationId": "getSitesIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the sites were successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Sites.json"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                      "type": "site",
+                      "attributes": {
+                        "displayName": "Site A",
+                        "integratorId": "my-site-id",
+                        "timeZone": "Canada/Pacific"
+                      },
+                      "links": {
+                        "self": "/services/sites/23ab847c-1aac-4976-a12c-8242882d8fc9"
+                      }
+                    }
+                  ],
+                  "links": {
+                    "self": "/services/integrator/clients/my-client-id/sites",
+                    "http://calipsa.io/relation/client": "/clients/my-client-id"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The client was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get all sites for a client given the client integrator ID. The sites are returned in alphabetical order by displayName.",
+        "x-stoplight": {
+          "id": "qcv6inl57qzht"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/clients/{clientIntegratorId}/sites/{siteIntegratorId}": {
+      "parameters": [
+        {
+          "name": "clientIntegratorId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the client resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        },
+        {
+          "name": "siteIntegratorId",
+          "description": "An ID provided by the requestor which, together with client, uniquely and immutably identifies the site resource",
+          "in": "path",
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get Site (Integrator)",
+        "operationId": "getSiteIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the site was successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Site.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                    "type": "site",
+                    "attributes": {
+                      "displayName": "Site A",
+                      "integratorId": "my-site-id",
+                      "timeZone": "Canada/Pacific"
+                    },
+                    "links": {
+                      "self": "/services/integrator/clients/my-client-id/sites/my-site-id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a site given the client and site integrator IDs.",
+        "x-stoplight": {
+          "id": "r0w0nha2pwrvz"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      },
+      "put": {
+        "summary": "Create/Update Site (Integrator)",
+        "operationId": "addSiteIntegrator",
+        "requestBody": {
+          "description": "Create or update a site using a simple syntax",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "displayName"
+                ],
+                "properties": {
+                  "displayName": {
+                    "$ref": "./schemas/DisplayName.json"
+                  },
+                  "timeZone": {
+                    "description": "The name of the site's time zone (as listed in the official tz database). If no `timeZone` is provided, the default site time zone for the company will be used.",
+                    "type": "string",
+                    "format": "timeZone",
+                    "examples": [
+                      "America/Chicago",
+                      "Europe/London"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "TryIt Chicago",
+                    "timeZone": "America/Chicago"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for the management of a specific site of a client. If the client does not already exist when this endpoint is called, it will be created with the same display name as the clientIntegratorId that is passed.",
+        "responses": {
+          "200": {
+            "description": "Returned when the site was successfully updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Site.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "c6169322-88a0-4a63-ad21-75d241772143",
+                    "type": "site",
+                    "attributes": {
+                      "integratorId": "Chicago",
+                      "displayName": "TryIt Chicago",
+                      "timeZone": "America/Chicago"
+                    },
+                    "links": {
+                      "self": "/services/clients/TryIt/sites/Chicago"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returned when the site was successfully created and did not previously exist",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Site.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "c6169322-88a0-4a63-ad21-75d241772143",
+                    "type": "site",
+                    "attributes": {
+                      "integratorId": "Chicago",
+                      "displayName": "TryIt Chicago",
+                      "timeZone": "America/Chicago"
+                    },
+                    "links": {
+                      "self": "/services/clients/TryIt/sites/Chicago"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "The location of the newly-created resource."
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "nktfvktefz51b"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Site (Integrator)",
+        "operationId": "deleteSiteIntegrator",
+        "responses": {
+          "204": {
+            "description": "Returned when the site was successfully deleted"
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site was not found or was already deleted",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete a site given the client and site integrator IDs.",
+        "x-stoplight": {
+          "id": "ot16f89gaggh9"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/clients/{clientIntegratorId}/sites/{siteIntegratorId}/views": {
+      "parameters": [
+        {
+          "name": "clientIntegratorId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the client resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        },
+        {
+          "name": "siteIntegratorId",
+          "description": "An ID provided by the requestor which, together with client, uniquely and immutably identifies the site resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Views (Integrator)",
+        "operationId": "getViewsIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the views in the site were successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Views.json"
+                },
+                "examples": {
+                  "Masks": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                          "type": "view",
+                          "attributes": {
+                            "integratorId": "BigLongSerialNumber19382",
+                            "displayName": "Alley Door",
+                            "snapshotSet": false,
+                            "masks": [
+                              [
+                                [
+                                  0.1,
+                                  0.1
+                                ],
+                                [
+                                  0.4,
+                                  0.1
+                                ],
+                                [
+                                  0.4,
+                                  0.4
+                                ],
+                                [
+                                  0.1,
+                                  0.4
+                                ]
+                              ]
+                            ],
+                            "thermal": false
+                          }
+                        }
+                      ],
+                      "links": {
+                        "self": "/services/sites/1b06106a-d8c6-49e7-948e-4e30ba0877b6/views"
+                      }
+                    }
+                  },
+                  "ExampleCam": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "263befc1-8bf5-4ec9-9d4b-d5175f9274ac",
+                          "type": "view",
+                          "attributes": {
+                            "integratorId": "test-camera-model",
+                            "displayName": "test-camera-model",
+                            "createdAt": "2023-09-15T23:22:31.041Z",
+                            "updatedAt": "2023-09-15T23:22:31.172Z",
+                            "active": true,
+                            "snapshotSet": false,
+                            "masks": [],
+                            "thermal": false,
+                            "features": {
+                              "sceneChangeDetection": {}
+                            }
+                          },
+                          "links": {
+                            "self": "/services/views/263befc1-8bf5-4ec9-9d4b-d5175f9274ac"
+                          }
+                        },
+                        {
+                          "id": "7ba3b47f-0df7-440a-a256-dbe5239b310d",
+                          "type": "view",
+                          "attributes": {
+                            "integratorId": "test-camera",
+                            "displayName": "test-camera",
+                            "createdAt": "2023-09-15T22:41:37.016Z",
+                            "updatedAt": "2023-09-15T22:41:37.155Z",
+                            "active": true,
+                            "snapshotSet": false,
+                            "masks": [],
+                            "thermal": false,
+                            "features": {
+                              "sceneChangeDetection": {}
+                            }
+                          },
+                          "links": {
+                            "self": "/services/views/7ba3b47f-0df7-440a-a256-dbe5239b310d"
+                          }
+                        }
+                      ],
+                      "links": {
+                        "self": "/services/sites/89a011f4-ebd8-4951-9dd4-08f5385c2e2f/views"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The site was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get all views in a site. The views are returned in alphabetical order by displayName.",
+        "parameters": [],
+        "x-stoplight": {
+          "id": "wbv3ue4p7bteu"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/clients/{clientIntegratorId}/sites/{siteIntegratorId}/views/{cameraIntegratorId}": {
+      "parameters": [
+        {
+          "name": "clientIntegratorId",
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the client resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        },
+        {
+          "name": "siteIntegratorId",
+          "description": "An ID provided by the requestor which, together with client, uniquely and immutably identifies the site resource",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        },
+        {
+          "name": "cameraIntegratorId",
+          "description": "An ID provided by the requestor uniquely identifies the camera across all sites and clients.",
+          "in": "path",
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "Create/Update View (Integrator)",
+        "operationId": "addViewIntegrator",
+        "requestBody": {
+          "description": "Create or update a view using a simple syntax",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./schemas/ViewUpsertBody.json"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Alley Door"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows for the management of a specific view of a camera. If the client and/or site do not already exist when this endpoint is called, they will be created with sensible defaults.",
+        "responses": {
+          "200": {
+            "description": "Returned when the view was successfully updated",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/View.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                    "type": "view",
+                    "attributes": {
+                      "integratorId": "BigLongSerialNumber19382",
+                      "displayName": "Alley Door",
+                      "snapshotSet": false,
+                      "masks": [
+                        [
+                          [
+                            0.1,
+                            0.1
+                          ],
+                          [
+                            0.4,
+                            0.1
+                          ],
+                          [
+                            0.4,
+                            0.4
+                          ],
+                          [
+                            0.1,
+                            0.4
+                          ]
+                        ]
+                      ],
+                      "thermal": false
+                    },
+                    "links": {
+                      "self": "/services/integrator/views/BigLongSerialNumber19382"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returned when the view was successfully created",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/View.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                    "type": "view",
+                    "attributes": {
+                      "integratorId": "BigLongSerialNumber19382",
+                      "displayName": "Alley Door",
+                      "snapshotSet": false,
+                      "masks": [
+                        [
+                          [
+                            0.1,
+                            0.1
+                          ],
+                          [
+                            0.4,
+                            0.1
+                          ],
+                          [
+                            0.4,
+                            0.4
+                          ],
+                          [
+                            0.1,
+                            0.4
+                          ]
+                        ]
+                      ],
+                      "thermal": false
+                    },
+                    "links": {
+                      "self": "/services/integrator/views/BigLongSerialNumber19382"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "detail": "must have required property 'displayName'",
+                          "meta": {
+                            "instancePath": "/requestBody",
+                            "schemaPath": "#/properties/requestBody/required",
+                            "keyword": "required",
+                            "params": {
+                              "missingProperty": "displayName"
+                            }
+                          },
+                          "status": "400"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The features being set for this view are not allowed by company capabilities",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "xi9dxouk8yvuj"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}/alarms": {
+      "parameters": [
+        {
+          "name": "cameraIntegratorId",
+          "description": "The camera integrator ID that this analysis is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Perform Full Frame Analysis (Integrator - Images)",
+        "operationId": "analyzeAlarmIntegrator",
+        "requestBody": {
+          "description": "Send a series of up to 6 JPEG images for analysis",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "saveAlarm": {
+                    "description": "This option is deprecated. Alarms are not saved using this option on the MCAP platform.",
+                    "type": "boolean",
+                    "deprecated": true
+                  },
+                  "options": {
+                    "$ref": "./schemas/AlarmOptions.json"
+                  },
+                  "alarmImages": {
+                    "description": "A series of images in JPEG format. Minimum image dimensions are 320x240.",
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AlarmAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid",
+                        "objectDetection": {
+                          "boundingBoxes": [
+                            [
+                              {
+                                "x1": 0.367,
+                                "y1": 0.479,
+                                "x2": 0.42,
+                                "y2": 0.658,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.427,
+                                "y1": 0.438,
+                                "x2": 0.472,
+                                "y2": 0.596,
+                                "objectType": "person"
+                              }
+                            ],
+                            [
+                              {
+                                "x1": 0.416,
+                                "y1": 0.506,
+                                "x2": 0.473,
+                                "y2": 0.727,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.492,
+                                "y1": 0.481,
+                                "x2": 0.536,
+                                "y2": 0.656,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.219,
+                                "y1": 0.504,
+                                "x2": 0.252,
+                                "y2": 0.59,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.37,
+                                "y1": 0.475,
+                                "x2": 0.411,
+                                "y2": 0.623,
+                                "objectType": "person"
+                              }
+                            ],
+                            []
+                          ]
+                        }
+                      },
+                      "sceneChange": {
+                        "result": "not_valid"
+                      }
+                    }
+                  },
+                  "links": {
+                    "http://calipsa.io/relation/alarm": "https://api.calipsa.io/alarm/-2147434948",
+                    "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages",
+                    "http://calipsa.io/relation/modifiedimages": "https://api.calipsa.io/alarm/-2147434948/modifiedimages",
+                    "http://calipsa.io/relation/alarmpage": "https://m.calipsa.io/cams/alarms/-2147434948"
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found for specified cameraIntegratorId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Resource not found for specified cameraIntegratorId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request camera was perviously registered, but has since been deleted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "410",
+                          "detail": "Resource has been deleted"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of images representing a small point in time. The platform will return an analysis document in response which will indicate what kind of analytics were performed and whether they detected anything they were configured to look for.\n\nThe images in the series must be the same size.",
+        "x-stoplight": {
+          "id": "tpzcurpaxkr95"
+        },
+        "tags": [
+          "Analytics via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}/analyses": {
+      "parameters": [
+        {
+          "name": "cameraIntegratorId",
+          "description": "The camera integrator ID that this analysis is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Perform Full Frame Analysis (Integrator - Image URLs)",
+        "operationId": "analyzeImagesIntegrator",
+        "requestBody": {
+          "description": "Send a series of up to 32 JPEG image URLs for analysis",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/AlarmOptions.json"
+                  },
+                  "analysisImageUrls": {
+                    "$ref": "./schemas/AnalysisImageUrls.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AlarmAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid",
+                        "objectDetection": {
+                          "boundingBoxes": [
+                            [
+                              {
+                                "x1": 0.367,
+                                "y1": 0.479,
+                                "x2": 0.42,
+                                "y2": 0.658,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.427,
+                                "y1": 0.438,
+                                "x2": 0.472,
+                                "y2": 0.596,
+                                "objectType": "person"
+                              }
+                            ],
+                            [
+                              {
+                                "x1": 0.416,
+                                "y1": 0.506,
+                                "x2": 0.473,
+                                "y2": 0.727,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.492,
+                                "y1": 0.481,
+                                "x2": 0.536,
+                                "y2": 0.656,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.219,
+                                "y1": 0.504,
+                                "x2": 0.252,
+                                "y2": 0.59,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.37,
+                                "y1": 0.475,
+                                "x2": 0.411,
+                                "y2": 0.623,
+                                "objectType": "person"
+                              }
+                            ],
+                            []
+                          ]
+                        }
+                      },
+                      "sceneChange": {
+                        "result": "not_valid"
+                      }
+                    }
+                  },
+                  "links": {
+                    "http://calipsa.io/relation/alarm": "https://api.calipsa.io/alarm/-2147434948",
+                    "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages",
+                    "http://calipsa.io/relation/modifiedimages": "https://api.calipsa.io/alarm/-2147434948/modifiedimages",
+                    "http://calipsa.io/relation/alarmpage": "https://m.calipsa.io/cams/alarms/-2147434948"
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found for specified cameraIntegratorId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Resource not found for specified cameraIntegratorId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request camera was perviously registered, but has since been deleted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "410",
+                          "detail": "Resource has been deleted"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of image URLs. The platform will retrieve the images and return an analysis document in response which will indicate what kind of analytics were performed and whether they detected anything they were configured to look for.\n\nThe platform will also publish the results to a Kafka message broker for non-real-time consumption.\n\nThe images in the series must be the same size.",
+        "tags": [
+          "Analytics via Integrator ID"
+        ],
+        "x-stoplight": {
+          "id": "5dw49u0x72wof"
+        }
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}/chips": {
+      "parameters": [
+        {
+          "name": "cameraIntegratorId",
+          "description": "The camera integrator ID that this chip detection is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Perform Chip Analysis (Integrator)",
+        "operationId": "analyzeChipIntegrator",
+        "requestBody": {
+          "description": "Send a series of up to 6 JPEG images or a list of up to 8 image URLs for analysis",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/ChipsOptions.json"
+                  },
+                  "chipImages": {
+                    "$ref": "./schemas/ChipsImages.json"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/ChipsOptions.json"
+                  },
+                  "chipUrls": {
+                    "$ref": "./schemas/ChipUrls.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful chip analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/ChipAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid"
+                      }
+                    }
+                  },
+                  "links": {
+                    "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages"
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found for specified cameraIntegratorId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Resource not found for specified cameraIntegratorId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Request camera was perviously registered, but has since been deleted.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "410",
+                          "detail": "Resource has been deleted"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of images representing a small point in time. The platform will return an analysis document in response which will indicate what kind of analytics were performed and whether they detected anything they were configured to look for.\n\nThe images in the series must be the same size.",
+        "x-stoplight": {
+          "id": "g6hjnvsuejb9x"
+        },
+        "tags": [
+          "Analytics via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "name": "cameraIntegratorId",
+          "in": "path",
+          "required": true,
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the view resource"
+        }
+      ],
+      "get": {
+        "summary": "Get View (Integrator)",
+        "operationId": "getViewIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the view was successfully retrieved",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/View.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "23ab847c-1aac-4976-a12c-8242882d8fc9",
+                    "type": "view",
+                    "attributes": {
+                      "integratorId": "BigLongSerialNumber19382",
+                      "displayName": "Alley Door",
+                      "snapshotSet": false,
+                      "masks": [
+                        [
+                          [
+                            0.1,
+                            0.1
+                          ],
+                          [
+                            0.4,
+                            0.1
+                          ],
+                          [
+                            0.4,
+                            0.4
+                          ],
+                          [
+                            0.1,
+                            0.4
+                          ]
+                        ]
+                      ],
+                      "thermal": false
+                    },
+                    "links": {
+                      "self": "/services/integrator/cameras/BigLongSerialNumber19382"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The camera was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a camera given the camera integrator ID.",
+        "x-stoplight": {
+          "id": "7ykczg4zyp33m"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      },
+      "delete": {
+        "summary": "Delete View (Integrator)",
+        "operationId": "deleteViewIntegrator",
+        "responses": {
+          "204": {
+            "description": "Returned when the view was successfully deleted"
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The view was not found or was already deleted",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete a view given the view ID.",
+        "x-stoplight": {
+          "id": "os7o14pwb27si"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}/snapshot": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "name": "cameraIntegratorId",
+          "in": "path",
+          "required": true,
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the view resource"
+        }
+      ],
+      "get": {
+        "summary": "Get Snapshot for View (Integrator)",
+        "operationId": "getSnapshotIntegrator",
+        "responses": {
+          "301": {
+            "description": "Returned when a snapshot URL for the specified view was successfully created. Client should follow the redirect to get the snapshot.",
+            "content": {},
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "URL for the snapshot image"
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "image/jpeg (content returned after following the redirect)"
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "max-age of the snapshot image URL"
+              }
+            }
+          },
+          "404": {
+            "description": "The camera was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the snapshot for a camera given the camera integrator ID. This endpoint generates an S3 pre-signed URL for the snapshot requested and returns a 301 redirect response with that URL in the location header.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "night"
+              ]
+            },
+            "in": "query",
+            "name": "refImage",
+            "description": "If set to `day`, fetch the view's daytime reference image instead of its snapshot. If set to `night`, fetch the view's night-time reference image instead of its snapshot."
+          }
+        ],
+        "x-stoplight": {
+          "id": "zz9ywjhk03mv6"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/views/{viewId}/dayReferenceImage": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "The camera view ID that this image is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "put": {
+        "summary": "Put Day Reference Image for View",
+        "operationId": "putDayReferenceImage",
+        "responses": {
+          "204": {
+            "description": "Returned when the image has been successfully stored. The `Location` header will point to the new location of this resource."
+          },
+          "404": {
+            "description": "The view was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts an image representing the daytime reference image for scene change processing. The image sent in the body of this request will become the view's new daytime reference image.",
+        "requestBody": {
+          "content": {
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "description": "The daytime reference image for the specified view"
+        },
+        "x-stoplight": {
+          "id": "t5pzmvn1pjsr8"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/views/{viewId}/nightReferenceImage": {
+      "parameters": [
+        {
+          "name": "viewId",
+          "description": "The camera view ID that this image is associated to",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          }
+        }
+      ],
+      "put": {
+        "summary": "Put Night Reference Image for View",
+        "operationId": "putNightReferenceImage",
+        "responses": {
+          "204": {
+            "description": "Returned when the image has been successfully stored. The `Location` header will point to the new location of this resource."
+          },
+          "404": {
+            "description": "The view was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts an image representing the night-time reference image for sceneh change processing. The image sent in the body of this request will become the view's new night reference image.",
+        "requestBody": {
+          "content": {
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "description": "The night-time reference image for the specified view"
+        },
+        "x-stoplight": {
+          "id": "alpv9gpcn00n2"
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ]
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}/dayReferenceImage": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "name": "cameraIntegratorId",
+          "in": "path",
+          "required": true,
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the view resource"
+        }
+      ],
+      "put": {
+        "summary": "Put Day Reference Image for View (Integrator)",
+        "operationId": "putDayReferenceImageIntegrator",
+        "responses": {
+          "204": {
+            "description": "Returned when the image has been successfully stored"
+          },
+          "404": {
+            "description": "The view was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts an image representing the daytime reference image for scene change processing. The image sent in the body of this request will become the view's new daytime reference image.",
+        "requestBody": {
+          "content": {
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "description": "The daytime reference image for the specified view"
+        },
+        "x-stoplight": {
+          "id": "6y886dfru0t70"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/integrator/views/{cameraIntegratorId}/nightReferenceImage": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "name": "cameraIntegratorId",
+          "in": "path",
+          "required": true,
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the view resource"
+        }
+      ],
+      "put": {
+        "summary": "Put Night Reference Image for View (Integrator)",
+        "operationId": "putNightReferenceImageIntegrator",
+        "responses": {
+          "204": {
+            "description": "Returned when the image has been successfully stored"
+          },
+          "404": {
+            "description": "The view was not found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts an image representing the night-time reference image for scene change processing. The image sent in the body of this request will become the view's new night reference image.",
+        "requestBody": {
+          "content": {
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "description": "The night-time reference image for the specified view"
+        },
+        "x-stoplight": {
+          "id": "9fnfil6bykc16"
+        },
+        "tags": [
+          "Configuration via Integrator ID"
+        ]
+      }
+    },
+    "/companies": {
+      "get": {
+        "summary": "Get all companies",
+        "operationId": "getCompanies",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "name": "page[size]",
+            "in": "query",
+            "description": "Pagination directive - setting this parameter enables pagination.\n\nIndicates how many records to return in this request. Eliminating this parameter will return all records."
+          },
+          {
+            "name": "page[after]",
+            "description": "Pagination directive - may not be combined with `page[before]`.\n\nWhere to begin requested page. Will return records beginning with the record immediately following the ID specified. NOTE: It is recommended to follow the `next` link in the `link` object rather than setting this directly.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page[before]",
+            "description": "Pagination directive - may not be combined with `page[after]`.\n\nWhere to end requested page. Will return records ending with the record immediately before the ID specified. NOTE: It is recommended to follow the `prev` link in the `link` object rather than setting this directly.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned when the company list was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Companies.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                          "type": "company",
+                          "attributes": {
+                            "displayName": "Rafael's Hardware",
+                            "capabilities": [
+                              "detect_face"
+                            ],
+                            "daysToRetainData": 30
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "description": "This endpoint lists all companies created by this integration partner.\n\nThis endpoint can paginate responses if the client sets the `page[size]` query parameter in the request (not setting `page[size]` results in all records being returned). The `links` object in a paginated response will contain a `next` and `prev` link, which will return the next and previous pages of a paginated request respectively (the `page[size]` in the original request is used for the `prev` and `next` links). It is not recommended to set the `page[before]` and `page[after]` parameters directly, as this may result in unexpected behavior.",
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "oxzhz0f0zld0s"
+        }
+      },
+      "post": {
+        "summary": "Create a new company",
+        "responses": {
+          "201": {
+            "description": "Returned when a new company resource was successfully created as a result of the request. The response returns a token which represents a service credential to be used for all operations for this company. ",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        },
+                        "relationships": {
+                          "token": {
+                            "data": {
+                              "type": "token",
+                              "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4"
+                            }
+                          }
+                        }
+                      },
+                      "included": [
+                        {
+                          "type": "token",
+                          "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4",
+                          "attributes": {
+                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "URL of the created resource"
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Request body is missing the siteId parameter"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "operationId": "createCompany",
+        "x-stoplight": {
+          "id": "dwybrq1b3mwvd"
+        },
+        "description": "This endpoint creates a new company if the user specified in the authorization token is an integration partner with that privilege.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "displayName",
+                  "capabilities"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "capabilities": {
+                    "description": "A list of capabilities that the new company should be enabled for. This list cannot exceed the integration partner's own capability list.",
+                    "$ref": "./schemas/CompanyCapabilities.json"
+                  },
+                  "daysToRetainData": {
+                    "type": "integer",
+                    "description": "The number of days to retain analysis data for this company. This includes alarm and chip images and the associated analysis result, if applicable. If not specified, the default value is 30 days. Setting this to 0 means that no images will be stored on MCAP.",
+                    "default": 30,
+                    "minimum": 0,
+                    "maximum": 30
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Rafael's Hardware",
+                    "capabilities": [
+                      "detect_face"
+                    ],
+                    "daysToRetainData": 30
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/PlatformId.json"
+          },
+          "name": "companyId",
+          "in": "path",
+          "required": true,
+          "description": "ID for the company"
+        }
+      ],
+      "put": {
+        "summary": "Update a company",
+        "description": "Update an existing company",
+        "operationId": "updateCompany",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "displayName",
+                  "capabilities"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "capabilities": {
+                    "description": "A list of capabilities that the updated company should be enabled for. This list cannot exceed the integration partner's own capability list.",
+                    "$ref": "./schemas/CompanyCapabilities.json"
+                  },
+                  "daysToRetainData": {
+                    "$ref": "./schemas/RetentionDays.json",
+                    "description": "The number of days to retain alarm and chip data for this company. This includes alarm and chip images and the associated analysis result, if applicable. If not specified, the default value is 30 days."
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Rafael's Hardware",
+                    "capabilities": [
+                      "detect_face"
+                    ],
+                    "daysToRetainData": 30
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when a company resource was successfully updated as a result of the request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Request body is missing the displayName parameter"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "The company was not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Not Found"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "oru0gsjjd5dbs"
+        }
+      },
+      "get": {
+        "summary": "Get a company",
+        "description": "Get an existing company",
+        "operationId": "getCompany",
+        "responses": {
+          "200": {
+            "description": "Returned when the company was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "The company was not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Not Found"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          },
+          {
+            "CompanyToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "0pi642d8iha4s"
+        }
+      },
+      "delete": {
+        "summary": "Delete a company",
+        "responses": {
+          "204": {
+            "description": "No Content - company was successfully deleted."
+          },
+          "404": {
+            "description": "The company was not found so there is nothing to delete.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Not Found"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "deleteCompany",
+        "description": "This endpoint deletes a company if the user specified in the authorization token is an integration partner with that privilege.",
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "i36dxwjqvxazm"
+        }
+      }
+    },
+    "/integrator/companies/{integratorId}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "name": "integratorId",
+          "in": "path",
+          "required": true,
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the company resource"
+        }
+      ],
+      "get": {
+        "summary": "Get a company (Integrator)",
+        "operationId": "getCompanyIntegrator",
+        "responses": {
+          "200": {
+            "description": "Returned when the company was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "The company was not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Not Found"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "_2j3g0k7q8z9v"
+        }
+      },
+      "put": {
+        "summary": "Update a company (Integrator)",
+        "operationId": "upsertCompanyIntegrator",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "displayName",
+                  "capabilities"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "capabilities": {
+                    "$ref": "./schemas/CompanyCapabilities.json"
+                  },
+                  "daysToRetainData": {
+                    "$ref": "./schemas/RetentionDays.json",
+                    "description": "The number of days to retain alarm and chip data for this company. This includes alarm and chip images and the associated analysis result, if applicable. If not specified, the default value is 30 days."
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Rafael's Hardware",
+                    "capabilities": [
+                      "detect_face"
+                    ],
+                    "daysToRetainData": 30
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when a company resource was successfully updated as a result of the request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returned when a new company resource was successfully created as a result of the request. The response returns a token which represents a service credential to be used for all operations for this company. ",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        },
+                        "relationships": {
+                          "token": {
+                            "data": {
+                              "type": "token",
+                              "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4"
+                            }
+                          }
+                        }
+                      },
+                      "included": [
+                        {
+                          "type": "token",
+                          "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4",
+                          "attributes": {
+                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Request body is missing the displayName parameter"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ]
+      }
+    },
+    "/company": {
+      "get": {
+        "summary": "Get company profile",
+        "description": "Get the company profile of the service credential currently being used",
+        "operationId": "getOwnCompany",
+        "responses": {
+          "200": {
+            "description": "Returned when the company was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ],
+        "x-stoplight": {
+          "id": "ieue947d5a7n2"
+        }
+      },
+      "patch": {
+        "summary": "Update company profile",
+        "description": "Update the company profile of the service credential currently being used",
+        "operationId": "patchOwnCompany",
+        "requestBody": {
+          "content": {
+            "application/merge-patch+json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Rafael's Hardware"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when a company resource was successfully patched as a result of the request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Request body is missing the displayName parameter"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "tags": [
+          "Configuration via Platform ID"
+        ],
+        "x-stoplight": {
+          "id": "j6sn5199ka8zw"
+        }
+      }
+    },
+    "/embeddings/converter": {
+      "parameters": [],
+      "post": {
+        "summary": "Convert Embeddings",
+        "operationId": "convertEmbeddings",
+        "requestBody": {
+          "description": "Send an array containing a series of embeddings arrays ",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/EmbeddingsConversionOptions.json"
+                  },
+                  "embeddings": {
+                    "description": "The array of embeddings arrays to convert.",
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful conversion result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/EmbeddingsConversionResult.json"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Requested and supplied embeddings versions must differ."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user encoded in the token does not have the correct privileges.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts an array of embeddings arrays, representing past analyses. The platform will convert the embeddings as specified in the request (`version.supplied` and `version.requested`) and produce a result which contains the newly calculated embeddings.",
+        "tags": [
+          "Utilities"
+        ],
+        "x-stoplight": {
+          "id": "469ge546q6v1x"
+        }
+      }
+    },
+    "/analyses/{analysisId}/annotations": {
+      "parameters": [
+        {
+          "name": "analysisId",
+          "description": "An ID provided by the requestor which uniquely identifies an analysis result",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Annotate an existing analysis result",
+        "responses": {
+          "204": {
+            "description": "Returned when an annotation was successfully added for the given analysis ID."
+          },
+          "400": {
+            "description": "If the request is missing the required parameters, a 400 error will be returned.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/jsonapi/Errors.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "400",
+                          "detail": "Request body is missing the description parameter"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "operationId": "addAnnotation",
+        "description": "This endpoint creates a new annotation for an alarm analysis.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "description"
+                ],
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "description": "A description of the issue or feedback for the alarm analysis specified by the analysis ID."
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "description": "This was a car, not a bike."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Analytics Results"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          },
+          {
+            "CompanyToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "16f4s1jykq9vh"
+        }
+      }
+    },
+    "/analyses": {
+      "parameters": [
+        {
+          "name": "startTime",
+          "description": "Start time to use when querying analyses.",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "endTime",
+          "description": "End time to use when querying analyses.",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "siteId",
+          "description": "Site ID to use when querying analyses.",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "viewId",
+          "description": "View ID to use when querying analyses.",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get analyses",
+        "operationId": "getAnalyses",
+        "responses": {
+          "200": {
+            "description": "Returned when the analyses were successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AnalysisResults.json"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint retrieves all analyses that occurred between the specified start and end times. The start and end times are inclusive.",
+        "tags": [
+          "Analytics Results"
+        ],
+        "x-stoplight": {
+          "id": "1g0f4j2k3l5m6"
+        }
+      }
+    },
+    "/analyses/{analysisId}": {
+      "parameters": [
+        {
+          "name": "analysisId",
+          "description": "An ID provided by the requestor which uniquely identifies an analysis result",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get an analysis result",
+        "x-stoplight": {
+          "id": "i98vlqbfnu7vx"
+        },
+        "operationId": "getAnalysis",
+        "responses": {
+          "200": {
+            "description": "Returned when the analysis was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AnalysisResult.json"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint retrieves the analysis result that corresponds to the analysis ID",
+        "tags": [
+          "Analytics Results"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Forbidden403": {
+        "title": "Forbidden 403",
+        "description": "Returned when the user encoded in the token does not have the correct privileges.",
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "403",
+                "detail": "Forbidden"
+              }
+            ]
+          }
+        ],
+        "x-stoplight": {
+          "id": "i26ngl4yfybd2"
+        }
+      },
+      "NotFound404": {
+        "title": "Not Found 404",
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "404",
+                "detail": "Resource not found"
+              }
+            ]
+          }
+        ],
+        "x-stoplight": {
+          "id": "2346t3glbvrof"
+        }
+      }
+    },
+    "securitySchemes": {
+      "CompanyToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use this token to create company-level resources and perform analytics for views."
+      },
+      "IntegrationPartnerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use this token to create, maintain, and delete companies (tenants) in the AI Platform."
+      }
+    }
+  },
+  "security": [
+    {
+      "CompanyToken": []
+    }
+  ],
+  "x-internal": false,
+  "tags": [
+    {
+      "name": "Analytics Results",
+      "description": "Operations for providing feedback and annotations on analysis results"
+    },
+    {
+      "name": "Analytics via Integrator ID",
+      "description": "Analytics operations available when supplying integrator ID"
+    },
+    {
+      "name": "Analytics via Platform ID",
+      "description": {
+        "$ref": "./docs/tags/analytics-via-platform-id.md"
+      }
+    },
+    {
+      "name": "Configuration via Integrator ID",
+      "description": "Setup and configuration operations available when supplying integrator ID"
+    },
+    {
+      "name": "Configuration via Platform ID",
+      "description": "Setup and configuration operations available when supplying platform ID"
+    },
+    {
+      "name": "Tenant Management",
+      "description": "Operations for integration partners to manage their tenants in the platform"
+    },
+    {
+      "name": "Utilities",
+      "description": "Operations for performing utility operations related to data manipulation"
+    }
+  ]
+}

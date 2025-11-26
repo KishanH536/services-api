@@ -1,0 +1,64 @@
+{
+  "title": "Relationships",
+  "x-stoplight": {
+    "id": "lm2le9e4ncs6z"
+  },
+  "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.",
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-9](?:[-\\w]*[a-zA-Z0-9])?$": {
+      "properties": {
+        "links": {
+          "$ref": "./RelationshipLinks.json"
+        },
+        "data": {
+          "description": "Member, whose value represents \"resource linkage\".",
+          "oneOf": [
+            {
+              "$ref": "./RelationshipToOne.json"
+            },
+            {
+              "$ref": "./RelationshipToMany.json"
+            }
+          ]
+        },
+        "meta": {
+          "$ref": "./Meta.json"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "data"
+          ]
+        },
+        {
+          "required": [
+            "meta"
+          ]
+        },
+        {
+          "required": [
+            "links"
+          ]
+        }
+      ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "id"
+            ]
+          },
+          {
+            "required": [
+              "type"
+            ]
+          }
+        ]
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

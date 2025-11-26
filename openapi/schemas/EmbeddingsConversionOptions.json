@@ -1,0 +1,39 @@
+{
+  "title": "Embeddings Conversion Options",
+  "x-stoplight": {
+    "id": "obv5s5fdszfb1"
+  },
+  "description": "Options for performing embeddings conversion",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "description": "The versions of the embeddings that are supplied in the request and returned in the response after conversion.",
+      "type": "object",
+      "required": [
+        "supplied",
+        "requested"
+      ],
+      "properties": {
+        "supplied": {
+          "description": "The version of the embeddings provided in the request.",
+          "type": "number",
+          "enum": [
+            5,
+            6
+          ]
+        },
+        "requested": {
+          "description": "The version of the result embeddings.",
+          "type": "number",
+          "enum": [
+            5,
+            6
+          ]
+        }
+      }
+    }
+  }
+}

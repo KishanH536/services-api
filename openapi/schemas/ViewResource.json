@@ -1,0 +1,157 @@
+{
+  "title": "View Resource",
+  "description": "A single view resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json"
+    },
+    {
+      "properties": {
+        "id": {},
+        "type": {
+          "const": "view"
+        },
+        "attributes": {
+          "properties": {
+            "integratorId": {
+              "description": "The integrator-supplied ID associated with this camera",
+              "$ref": "./IntegratorId.json"
+            },
+            "displayName": {
+              "description": "The name of the camera as displayed on a web page",
+              "$ref": "./DisplayName.json"
+            },
+            "active": {
+              "description": "Whether the camera is active. Please use the features object instead to determine whether any features are enabled for this camera.",
+              "type": "boolean",
+              "readOnly": true,
+              "deprecated": true
+            },
+            "created": {
+              "description": "The date and time when this resource was created",
+              "type": "string",
+              "format": "date-time"
+            },
+            "updated": {
+              "description": "The date and time when this resource was last updated",
+              "type": "string",
+              "format": "date-time"
+            },
+            "snapshotSet": {
+              "description": "When false, the camera's snapshot will be set when a new alarm is triggered.",
+              "type": "boolean"
+            },
+            "masks": {
+              "description": "A collection of masks for the view.",
+              "type": "array",
+              "items": {
+                "$ref": "./Mask.json"
+              },
+              "default": []
+            },
+            "thermal": {
+              "description": "Whether the camera is a thermal camera",
+              "type": "boolean"
+            },
+            "features": {
+              "description": "An object containing an attribute for each enabled feature. Each of these attributes is itself an object containing information related to the configuration of the enabled feature.",
+              "$ref": "./FeaturesResponse.json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "type": "view",
+      "id": "ca113f7f-5846-4468-b6f2-b3d36c01ba50",
+      "attributes": {
+        "integratorId": "sn31789-3891",
+        "displayName": "My Client Name",
+        "snapshotSet": false,
+        "thermal": false,
+        "features": {
+          "sceneChangeDetection": {},
+          "objectDetection": {
+            "humanDetection": true,
+            "vehicleDetection": true
+          }
+        }
+      },
+      "links": {
+        "self": "/services/views/ca113f7f-5846-4468-b6f2-b3d36c01ba50"
+      }
+    },
+    {
+      "type": "view",
+      "id": "ca113f7f-5846-4468-b6f2-b3d36c01ba50",
+      "attributes": {
+        "integratorId": "sn31789-3891",
+        "displayName": "My Client Name",
+        "snapshotSet": false,
+        "thermal": false,
+        "features": {
+          "sceneChangeDetection": {
+            "dayReferenceImage": {
+              "links": {
+                "http://calipsa.io/relation/current-image": {
+                  "href": "/somewhere/day-reference-image.jpg",
+                  "meta": {
+                    "lastUpdatedAt": "2023-01-01T00:00:00Z"
+                  }
+                }
+              }
+            },
+            "nightReferenceImage": {
+              "links": {
+                "http://calipsa.io/relation/current-image": {
+                  "href": "/somewhere/night-reference-image.jpg",
+                  "meta": {
+                    "lastUpdatedAt": "2023-01-01T00:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "advancedRules": [
+            {
+              "integratorId": "1001",
+              "name": "Rule 1",
+              "objectType": "person",
+              "loiteringDetection": {
+                "period": 30
+              },
+              "categories": [
+                "person"
+              ],
+              "zones": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    0.5,
+                    0
+                  ],
+                  [
+                    0.5,
+                    1
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "/services/views/ca113f7f-5846-4468-b6f2-b3d36c01ba50"
+      }
+    }
+  ]
+}

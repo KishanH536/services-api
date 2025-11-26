@@ -1,0 +1,460 @@
+{
+  "arazzo": "1.0.1",
+  "info": {
+    "title": "Perception API Workflows",
+    "version": "1.0.0",
+    "description": "Complete workflow demonstrating company creation, image analysis, and result retrieval for the Perception Services API."
+  },
+  "sourceDescriptions": [
+    {
+      "name": "perceptionAPI",
+      "url": "./perception.json",
+      "type": "openapi"
+    }
+  ],
+  "workflows": [
+    {
+      "workflowId": "completeAnalysisFlow",
+      "summary": "Create company, perform analysis, and retrieve results",
+      "description": "This workflow demonstrates the complete end-to-end process: creating a company tenant with an Integration Partner token, using the returned company token to perform a full-frame image analysis, and then retrieving the analysis results for verification.",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "integrationPartnerToken": {
+            "type": "string",
+            "description": "JWT token for the integration partner with company creation privileges"
+          },
+          "companyDisplayName": {
+            "type": "string",
+            "description": "Display name for the new company to be created"
+          },
+          "companyCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "detect_face",
+                "detect_vehicle",
+                "detect_lpr",
+                "detect_gun"
+              ]
+            },
+            "minItems": 1,
+            "description": "List of capabilities to enable for the company (e.g., detect_face, detect_vehicle)"
+          },
+          "daysToRetainData": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 30,
+            "default": 30,
+            "description": "Number of days to retain analysis data (0-30, default 30)"
+          },
+          "analysisImageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "minItems": 1,
+            "maxItems": 8,
+            "description": "Array of image URLs to analyze (1-8 images)"
+          },
+          "analysisOptions": {
+            "type": "object",
+            "description": "Analysis options specifying which analytics to run"
+          }
+        },
+        "required": [
+          "integrationPartnerToken",
+          "companyDisplayName",
+          "companyCapabilities",
+          "analysisImageUrls",
+          "analysisOptions"
+        ]
+      },
+      "steps": [
+        {
+          "stepId": "createCompany",
+          "description": "Create a new company tenant using the Integration Partner token. This step returns both the company ID and a company-specific authentication token.",
+          "operationId": "perceptionAPI.createCompany",
+          "operationPath": "/companies",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$inputs.integrationPartnerToken}"
+            }
+          ],
+          "requestBody": {
+            "contentType": "application/json",
+            "payload": {
+              "displayName": "$inputs.companyDisplayName",
+              "capabilities": "$inputs.companyCapabilities",
+              "daysToRetainData": "$inputs.daysToRetainData"
+            }
+          },
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 201"
+            },
+            {
+              "condition": "$response.body#/data/id",
+              "type": "jsonpath",
+              "context": "Ensure company ID is present in response"
+            },
+            {
+              "condition": "$response.body#/included/0/attributes/token",
+              "type": "jsonpath",
+              "context": "Ensure company token is present in response"
+            }
+          ],
+          "outputs": {
+            "companyId": "$response.body#/data/id",
+            "companyToken": "$response.body#/included/0/attributes/token"
+          }
+        },
+        {
+          "stepId": "performFullFrameAnalysis",
+          "description": "Perform full-frame image analysis using the company token obtained from the previous step. This analyzes the provided images according to the specified analysis options.",
+          "operationId": "perceptionAPI.analyzeFullFramesWithOptions",
+          "operationPath": "/analyzer/frames",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$steps.createCompany.outputs.companyToken}"
+            }
+          ],
+          "requestBody": {
+            "contentType": "application/json",
+            "payload": {
+              "options": "$inputs.analysisOptions",
+              "urls": "$inputs.analysisImageUrls"
+            }
+          },
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 200"
+            },
+            {
+              "condition": "$response.body#/data/id",
+              "type": "jsonpath",
+              "context": "Ensure analysis ID is present in response"
+            }
+          ],
+          "outputs": {
+            "analysisId": "$response.body#/data/id",
+            "analysisType": "$response.body#/data/type",
+            "resultSummary": "$response.body#/data/attributes/analytics/resultSummary"
+          }
+        },
+        {
+          "stepId": "getAnalysisResult",
+          "description": "Retrieve the complete analysis result using the analysis ID from the previous step. This confirms the analysis was stored and can be retrieved.",
+          "operationPath": "/analyses/{analysisId}",
+          "operationId": "perceptionAPI.getAnalysis",
+          "parameters": [
+            {
+              "name": "analysisId",
+              "in": "path",
+              "value": "$steps.performFullFrameAnalysis.outputs.analysisId"
+            },
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$steps.createCompany.outputs.companyToken}"
+            }
+          ],
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 200"
+            },
+            {
+              "condition": "$response.body#/data/id == $steps.performFullFrameAnalysis.outputs.analysisId",
+              "type": "jsonpath"
+            }
+          ],
+          "outputs": {
+            "retrievedAnalysis": "$response.body#/data/attributes"
+          }
+        }
+      ],
+      "outputs": {
+        "createdCompanyId": "$steps.createCompany.outputs.companyId",
+        "analysisId": "$steps.performFullFrameAnalysis.outputs.analysisId",
+        "resultSummary": "$steps.performFullFrameAnalysis.outputs.resultSummary",
+        "retrievedAnalysis": "$steps.getAnalysisResult.outputs.retrievedAnalysis"
+      }
+    },
+    {
+      "workflowId": "chipAnalysisFlow",
+      "summary": "Create company and perform chip analysis",
+      "description": "This workflow demonstrates creating a company tenant and then performing chip-based image analysis (analyzing cropped/extracted image chips rather than full frames).",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "integrationPartnerToken": {
+            "type": "string",
+            "description": "JWT token for the integration partner with company creation privileges"
+          },
+          "companyDisplayName": {
+            "type": "string",
+            "description": "Display name for the new company to be created"
+          },
+          "companyCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "detect_face",
+                "detect_vehicle",
+                "detect_lpr",
+                "detect_gun"
+              ]
+            },
+            "minItems": 1,
+            "description": "List of capabilities to enable for the company"
+          },
+          "daysToRetainData": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 30,
+            "default": 30,
+            "description": "Number of days to retain analysis data (0-30, default 30)"
+          },
+          "chipImageUrls": {
+            "type": "object",
+            "description": "Object containing arrays of chip image URLs for different types (person, vehicle, lpr, face, gun chips)",
+            "properties": {
+              "personChips": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "vehicleChips": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "lprChips": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "chipAnalysisOptions": {
+            "type": "object",
+            "description": "Chip analysis options specifying which chip analytics to run"
+          }
+        },
+        "required": [
+          "integrationPartnerToken",
+          "companyDisplayName",
+          "companyCapabilities",
+          "chipImageUrls",
+          "chipAnalysisOptions"
+        ]
+      },
+      "steps": [
+        {
+          "stepId": "createCompany",
+          "description": "Create a new company tenant using the Integration Partner token.",
+          "operationId": "perceptionAPI.createCompany",
+          "operationPath": "/companies",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$inputs.integrationPartnerToken}"
+            }
+          ],
+          "requestBody": {
+            "contentType": "application/json",
+            "payload": {
+              "displayName": "$inputs.companyDisplayName",
+              "capabilities": "$inputs.companyCapabilities",
+              "daysToRetainData": "$inputs.daysToRetainData"
+            }
+          },
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 201"
+            },
+            {
+              "condition": "$response.body#/data/id",
+              "type": "jsonpath",
+              "context": "Ensure company ID is present in response"
+            },
+            {
+              "condition": "$response.body#/included/0/attributes/token",
+              "type": "jsonpath",
+              "context": "Ensure company token is present in response"
+            }
+          ],
+          "outputs": {
+            "companyId": "$response.body#/data/id",
+            "companyToken": "$response.body#/included/0/attributes/token"
+          }
+        },
+        {
+          "stepId": "performChipAnalysis",
+          "description": "Perform chip-based image analysis using the company token obtained from the previous step.",
+          "operationId": "perceptionAPI.analyzeChipsWithOptions",
+          "operationPath": "/analyzer/chips",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$steps.createCompany.outputs.companyToken}"
+            }
+          ],
+          "requestBody": {
+            "contentType": "application/json",
+            "payload": {
+              "options": "$inputs.chipAnalysisOptions",
+              "chipUrls": "$inputs.chipImageUrls"
+            }
+          },
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 200"
+            },
+            {
+              "condition": "$response.body#/data/id",
+              "type": "jsonpath",
+              "context": "Ensure analysis ID is present in response"
+            }
+          ],
+          "outputs": {
+            "analysisId": "$response.body#/data/id",
+            "analysisType": "$response.body#/data/type",
+            "resultSummary": "$response.body#/data/attributes/analytics/resultSummary"
+          }
+        }
+      ],
+      "outputs": {
+        "createdCompanyId": "$steps.createCompany.outputs.companyId",
+        "analysisId": "$steps.performChipAnalysis.outputs.analysisId",
+        "resultSummary": "$steps.performChipAnalysis.outputs.resultSummary"
+      }
+    },
+    {
+      "workflowId": "analysisAnnotationFlow",
+      "summary": "Perform analysis and add annotation",
+      "description": "This workflow demonstrates performing an analysis and then adding an annotation to provide feedback or corrections to the analysis result.",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "companyToken": {
+            "type": "string",
+            "description": "JWT token for the company (pre-existing company)"
+          },
+          "analysisImageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "minItems": 1,
+            "maxItems": 8,
+            "description": "Array of image URLs to analyze (1-8 images)"
+          },
+          "analysisOptions": {
+            "type": "object",
+            "description": "Analysis options specifying which analytics to run"
+          },
+          "annotationDescription": {
+            "type": "string",
+            "description": "Description of the feedback or issue with the analysis result"
+          }
+        },
+        "required": [
+          "companyToken",
+          "analysisImageUrls",
+          "analysisOptions",
+          "annotationDescription"
+        ]
+      },
+      "steps": [
+        {
+          "stepId": "performAnalysis",
+          "description": "Perform full-frame image analysis using the provided company token.",
+          "operationId": "perceptionAPI.analyzeFullFramesWithOptions",
+          "operationPath": "/analyzer/frames",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$inputs.companyToken}"
+            }
+          ],
+          "requestBody": {
+            "contentType": "application/json",
+            "payload": {
+              "options": "$inputs.analysisOptions",
+              "urls": "$inputs.analysisImageUrls"
+            }
+          },
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 200"
+            },
+            {
+              "condition": "$response.body#/data/id",
+              "type": "jsonpath",
+              "context": "Ensure analysis ID is present in response"
+            }
+          ],
+          "outputs": {
+            "analysisId": "$response.body#/data/id",
+            "resultSummary": "$response.body#/data/attributes/analytics/resultSummary"
+          }
+        },
+        {
+          "stepId": "addAnnotation",
+          "description": "Add an annotation to the analysis result to provide feedback or report an issue.",
+          "operationId": "perceptionAPI.addAnnotation",
+          "operationPath": "/analyses/{analysisId}/annotations",
+          "parameters": [
+            {
+              "name": "analysisId",
+              "in": "path",
+              "value": "$steps.performAnalysis.outputs.analysisId"
+            },
+            {
+              "name": "Authorization",
+              "in": "header",
+              "value": "Bearer {$inputs.companyToken}"
+            }
+          ],
+          "requestBody": {
+            "contentType": "application/json",
+            "payload": {
+              "description": "$inputs.annotationDescription"
+            }
+          },
+          "successCriteria": [
+            {
+              "condition": "$statusCode == 204"
+            }
+          ],
+          "outputs": {
+            "annotationStatus": "success"
+          }
+        }
+      ],
+      "outputs": {
+        "analysisId": "$steps.performAnalysis.outputs.analysisId",
+        "resultSummary": "$steps.performAnalysis.outputs.resultSummary",
+        "annotationStatus": "$steps.addAnnotation.outputs.annotationStatus"
+      }
+    }
+  ]
+}

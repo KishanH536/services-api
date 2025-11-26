@@ -1,0 +1,8 @@
+{
+  "title": "Included",
+  "x-stoplight": {
+    "id": "al2wzwu0m933b"
+  },
+  "description": "The document's included relationship data is a representation of a resource related to the resource targeted by a request",
+  "$ref": "./Resource.json"
+}

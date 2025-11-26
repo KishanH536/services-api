@@ -1,0 +1,8 @@
+{
+  "title": "Data",
+  "x-stoplight": {
+    "id": "pnekcswpen8fh"
+  },
+  "description": "The document's \"primary data\" is a representation of the resource targeted by a request",
+  "$ref": "./Resource.json"
+}

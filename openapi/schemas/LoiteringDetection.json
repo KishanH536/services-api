@@ -1,0 +1,20 @@
+{
+  "title": "Loitering Detection",
+  "description": "Loitering detection configuration for the rule.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "period"
+  ],
+  "properties": {
+    "period": {
+      "description": "The loitering time period in seconds.",
+      "type": "number"
+    }
+  },
+  "examples": [
+    {
+      "period": 30
+    }
+  ]
+}

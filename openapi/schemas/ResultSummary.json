@@ -1,0 +1,17 @@
+{
+  "title": "Result Summary",
+  "x-stoplight": {
+    "id": "29ecacba127ee"
+  },
+  "description": "For a given analysis, a summary of the processing results.",
+  "type": "object",
+  "properties": {
+    "detectionResult": {
+      "description": "Result of the specified detection",
+      "$ref": "./DetectionResult.json",
+      "x-stoplight": {
+        "id": "t5xx5mdv5vpho"
+      }
+    }
+  }
+}

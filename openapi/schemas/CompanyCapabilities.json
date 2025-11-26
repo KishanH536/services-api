@@ -1,0 +1,25 @@
+{
+  "title": "Company Capabilities",
+  "x-stoplight": {
+    "id": "yn36t0m93p929"
+  },
+  "type": "array",
+  "description": "A list of capabilities that companies may posess.",
+  "items": {
+    "enum": [
+      "detect_face",
+      "detect_gun",
+      "forensic_search",
+      "vehicle_analytics",
+      "vehicle_analytics.embeddings",
+      "person_analytics",
+      "person_analytics.embeddings",
+      "scene_classification",
+      "detect_scene_change",
+      "multiple_risk_analysis"
+    ],
+    "x-stoplight": {
+      "id": "ssg86fvatckng"
+    }
+  }
+}

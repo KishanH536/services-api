@@ -1,0 +1,39 @@
+{
+  "title": "Count Detection",
+  "description": "Count detection configuration for the rule.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "count": {
+      "description": "The number of objects to detect. Mutually exclusive with `numberMin`/`numberMax`. Will be used if `numberOfObjectType` is `definite`.",
+      "type": "integer"
+    },
+    "numberMin": {
+      "description": "The minimum number of objects to detect. Will be used if `numberOfObjectType` is `range`.",
+      "type": "integer"
+    },
+    "numberMax": {
+      "description": "The maximum number of objects to detect. Will be used if `numberOfObjectType` is `range`.",
+      "type": "integer"
+    },
+    "numberOfObjectType": {
+      "description": "Indicates whether the rule should use a max/min range, or a definite number of objects. Value of `range` indicates to use the max/min values.",
+      "type": "string",
+      "enum": [
+        "definite",
+        "range"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "count": 4,
+      "numberOfObjectType": "definite"
+    },
+    {
+      "numberMin": 2,
+      "numberMax": 8,
+      "numberOfObjectType": "range"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+#! /usr/bin/env sh
+FILE=coverage/coverage-summary.json
+
+if [ ! -f "$FILE" ]; then
+  echo "Missing coverage summary file. Skipping coverage report upload."
+  exit
+fi
+
+read -r lines statements functions branches < <(echo $(cat $FILE | jq ".total" | jq ".lines.pct, .statements.pct, .functions.pct, .branches.pct"))
+
+curl --proxy 'http://localhost:29418' --request PUT "http://api.bitbucket.org/2.0/repositories/$BITBUCKET_REPO_OWNER/$BITBUCKET_REPO_SLUG/commit/$BITBUCKET_COMMIT/reports/sampleSystem-001" \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title": "Coverage Report",
+	"details": "Coverage stats",
+	"report_type": "COVERAGE",
+	"reporter": "console",
+	"result": "PASSED",
+	"data": [
+		{
+			"title": "Lines Coverage",
+			"type": "PERCENTAGE",
+			"value": '"$lines"'
+		},
+		{
+			"title": "Statements Coverage",
+			"type": "PERCENTAGE",
+			"value": '"$statements"'
+		},
+		{
+			"title": "Functions Coverage",
+			"type": "PERCENTAGE",
+			"value": '"$functions"'
+		},
+		{
+			"title": "Branches Coverage",
+			"type": "PERCENTAGE",
+			"value": '"$branches"'
+		}        
+	]
+}'

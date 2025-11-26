@@ -1,0 +1,1328 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "2.0.0",
+    "title": "Perception Services API",
+    "summary": "Provides AI-powered metadata for images",
+    "description": "An API for integration partners that provides tenant management and processing endpoints to receive AI-based analyses for provided images.\n\n## Schema Reference Strategy\n\nThis specification uses two types of schema references:\n\n- **Internal references** (`#/components/schemas/...`) are used for simple, generic HTTP error responses (e.g., `NotFound404`, `Forbidden403`) that are commonly referenced across multiple endpoints.\n\n- **External references** (`./schemas/...`) are used for all domain-specific business objects, complex schemas, and reusable components to promote maintainability, reusability, and better organization across API versions.",
+    "contact": {
+      "name": "MCAP Support",
+      "email": "MCAPEngineering@motorolasolutions.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.mcap-us-01.motorolasolutions.com/perception",
+      "description": "Production server (US Commercial)"
+    }
+  ],
+  "paths": {
+    "/analyzer/frames": {
+      "parameters": [],
+      "post": {
+        "summary": "Perform Full-Frame Analysis",
+        "operationId": "analyzeFullFramesWithOptions",
+        "requestBody": {
+          "description": "Attach a series of images and the analysis options to be run.",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "options",
+                  "images"
+                ],
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/v2/FullFrameAnalysisOptions.json"
+                  },
+                  "images": {
+                    "description": "A series of images in JPEG format. Minimum image dimensions are 320x240.",
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/v2/FullFrameAnalysisOptions.json"
+                  },
+                  "urls": {
+                    "$ref": "./schemas/AnalysisImageUrls.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AlarmAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid",
+                        "objectDetection": {
+                          "boundingBoxes": [
+                            [
+                              {
+                                "x1": 0.367,
+                                "y1": 0.479,
+                                "x2": 0.42,
+                                "y2": 0.658,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.427,
+                                "y1": 0.438,
+                                "x2": 0.472,
+                                "y2": 0.596,
+                                "objectType": "person"
+                              }
+                            ],
+                            [
+                              {
+                                "x1": 0.416,
+                                "y1": 0.506,
+                                "x2": 0.473,
+                                "y2": 0.727,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.492,
+                                "y1": 0.481,
+                                "x2": 0.536,
+                                "y2": 0.656,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.219,
+                                "y1": 0.504,
+                                "x2": 0.252,
+                                "y2": 0.59,
+                                "objectType": "person"
+                              },
+                              {
+                                "x1": 0.37,
+                                "y1": 0.475,
+                                "x2": 0.411,
+                                "y2": 0.623,
+                                "objectType": "person"
+                              }
+                            ],
+                            []
+                          ]
+                        }
+                      },
+                      "sceneChange": {
+                        "result": "not_valid"
+                      }
+                    }
+                  },
+                  "links": {
+                    "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or expired authentication token",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError500"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable - The service is temporarily unavailable",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceUnavailable503"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of images that are \"full frame\" (i.e., represent the entire view of a given image source). These images either retrievable from URLs or attached in the request itself.\n\nThe images in the series must be the same dimensions.\n\nThe service returns a response with the results of all analyses performed (and whether they were performed).",
+        "x-stoplight": {
+          "id": "shir22eriul4u"
+        },
+        "tags": [
+          "Analytics via Integrator ID"
+        ],
+        "security": [
+          {
+            "CompanyToken": []
+          },
+          {
+            "IntegrationPartnerTokenWithTenantId": []
+          }
+        ]
+      }
+    },
+    "/analyzer/chips": {
+      "parameters": [],
+      "post": {
+        "summary": "Perform Chip Analysis",
+        "operationId": "analyzeChipsWithOptions",
+        "requestBody": {
+          "description": "Attach a series of images and the analysis options to be run.",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "options",
+                  "images"
+                ],
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/v2/ChipAnalysisOptions.json"
+                  },
+                  "images": {
+                    "$ref": "./schemas/ChipsImages.json",
+                    "x-stoplight": {
+                      "id": "nly4wsped193x"
+                    }
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "$ref": "./schemas/v2/ChipAnalysisOptions.json"
+                  },
+                  "chipUrls": {
+                    "$ref": "./schemas/ChipUrls.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A successful chip analysis result",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/ChipAnalysis.json"
+                },
+                "example": {
+                  "data": {
+                    "id": "279a34d0-668d-4d71-9a56-8b8609caae81",
+                    "type": "alarm-analysis",
+                    "attributes": {
+                      "analytics": {
+                        "resultSummary": "valid"
+                      }
+                    }
+                  },
+                  "links": {
+                    "http://calipsa.io/relation/originalimages": "https://api.calipsa.io/alarm/-2147434948/originalimages"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or expired authentication token",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError500"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable - The service is temporarily unavailable",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceUnavailable503"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint accepts a series of images that are \"chips\" (i.e., tightly cropped images that have been created by an MSI object detector). These images either retrievable from URLs or attached in the request itself.\n\nThe service returns a response with the results of all analyses performed (and whether they were performed).",
+        "x-stoplight": {
+          "id": "vshuwz8l4yprj"
+        },
+        "tags": [
+          "Analytics via Integrator ID"
+        ],
+        "security": [
+          {
+            "CompanyToken": []
+          },
+          {
+            "IntegrationPartnerTokenWithTenantId": []
+          }
+        ]
+      }
+    },
+    "/companies": {
+      "get": {
+        "summary": "Get all companies",
+        "operationId": "getCompanies",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "name": "page[size]",
+            "in": "query",
+            "description": "Number of records to return per page.\n\nEnables cursor-based pagination with no maximum page size limit. When omitted, all records are returned in a single response (unpaginated)."
+          },
+          {
+            "name": "page[after]",
+            "description": "Pagination directive - may not be combined with `page[before]`.\n\nWhere to begin requested page. Will return records beginning with the record immediately following the ID specified. NOTE: It is recommended to follow the `next` link in the `link` object rather than setting this directly.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page[before]",
+            "description": "Pagination directive - may not be combined with `page[after]`.\n\nWhere to end requested page. Will return records ending with the record immediately before the ID specified. NOTE: It is recommended to follow the `prev` link in the `link` object rather than setting this directly.",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned when the company list was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Companies.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                          "type": "company",
+                          "attributes": {
+                            "displayName": "Rafael's Hardware",
+                            "capabilities": [
+                              "detect_face"
+                            ],
+                            "daysToRetainData": 30
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint lists all companies created by this integration partner.\n\nThis endpoint can paginate responses if the client sets the `page[size]` query parameter in the request (not setting `page[size]` results in all records being returned). The `links` object in a paginated response will contain a `next` and `prev` link, which will return the next and previous pages of a paginated request respectively (the `page[size]` in the original request is used for the `prev` and `next` links). It is not recommended to set the `page[before]` and `page[after]` parameters directly, as this may result in unexpected behavior.",
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "ld1rw2cfm0lr5"
+        }
+      },
+      "post": {
+        "summary": "Create a new company",
+        "responses": {
+          "201": {
+            "description": "Returned when a new company resource was successfully created as a result of the request. The response returns a token which represents a service credential to be used for all operations for this company. ",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        },
+                        "relationships": {
+                          "token": {
+                            "data": {
+                              "type": "token",
+                              "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4"
+                            }
+                          }
+                        }
+                      },
+                      "included": [
+                        {
+                          "type": "token",
+                          "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4",
+                          "attributes": {
+                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "URL of the created resource"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "createCompany",
+        "x-stoplight": {
+          "id": "3of1c5h3neuc7"
+        },
+        "description": "This endpoint creates a new company if the user specified in the authorization token is an integration partner with that privilege.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "displayName",
+                  "capabilities"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "capabilities": {
+                    "description": "A list of capabilities that the new company should be enabled for. This list cannot exceed the integration partner's own capability list.",
+                    "$ref": "./schemas/CompanyCapabilities.json"
+                  },
+                  "daysToRetainData": {
+                    "type": "integer",
+                    "description": "The number of days to retain analysis data for this company. This includes alarm and chip images and the associated analysis result, if applicable. If not specified, the default value is 30 days. Setting this to 0 means that no images will be stored on MCAP.",
+                    "default": 30,
+                    "minimum": 0,
+                    "maximum": 30
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Rafael's Hardware",
+                    "capabilities": [
+                      "detect_face"
+                    ],
+                    "daysToRetainData": 30
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ]
+      }
+    },
+    "/integrator/companies/{integratorId}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "./schemas/IntegratorId.json"
+          },
+          "name": "integratorId",
+          "in": "path",
+          "required": true,
+          "description": "An ID provided by the requestor which uniquely and immutably identifies the company resource"
+        }
+      ],
+      "get": {
+        "summary": "Get a company (Integrator)",
+        "operationId": "getCompanyIntegrator",
+        "description": "This endpoint retrieves a company resource using the integrator-provided ID. This allows integration partners to look up companies using their own identifiers rather than the platform-assigned ID. The integrator ID must have been previously specified when creating or updating the company.",
+        "responses": {
+          "200": {
+            "description": "Returned when the company was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when the requested resource was not found.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound404"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "errors": [
+                        {
+                          "status": "404",
+                          "detail": "Not Found"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "lz2bojb3nqwck"
+        }
+      },
+      "put": {
+        "summary": "Update a company (Integrator)",
+        "operationId": "upsertCompanyIntegrator",
+        "description": "This endpoint creates or updates a company resource using the integrator-provided ID. If a company with the specified integrator ID already exists, it will be updated with the provided values. If it doesn't exist, a new company will be created and a service token will be returned in the response. This allows integration partners to manage companies using their own identifiers in an idempotent manner.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "displayName",
+                  "capabilities"
+                ],
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "capabilities": {
+                    "$ref": "./schemas/CompanyCapabilities.json"
+                  },
+                  "daysToRetainData": {
+                    "$ref": "./schemas/RetentionDays.json",
+                    "description": "The number of days to retain alarm and chip data for this company. This includes alarm and chip images and the associated analysis result, if applicable. If not specified, the default value is 30 days."
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "displayName": "Rafael's Hardware",
+                    "capabilities": [
+                      "detect_face"
+                    ],
+                    "daysToRetainData": 30
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when a company resource was successfully updated as a result of the request.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returned when a new company resource was successfully created as a result of the request. The response returns a token which represents a service credential to be used for all operations for this company. ",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/Company.json"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+                        "type": "company",
+                        "attributes": {
+                          "displayName": "Rafael's Hardware",
+                          "capabilities": [
+                            "detect_face"
+                          ],
+                          "daysToRetainData": 30
+                        },
+                        "relationships": {
+                          "token": {
+                            "data": {
+                              "type": "token",
+                              "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4"
+                            }
+                          }
+                        }
+                      },
+                      "included": [
+                        {
+                          "type": "token",
+                          "id": "1d762efc-3663-484b-9a9a-791d8fce3ad4",
+                          "attributes": {
+                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenant Management"
+        ],
+        "security": [
+          {
+            "IntegrationPartnerToken": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "viyb8fqzt8e5d"
+        }
+      }
+    },
+    "/analyses/{analysisId}/annotations": {
+      "parameters": [
+        {
+          "name": "analysisId",
+          "description": "An ID provided by the requestor which uniquely identifies an analysis result",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Annotate an existing analysis result",
+        "responses": {
+          "204": {
+            "description": "Returned when an annotation was successfully added for the given analysis ID."
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "addAnnotation",
+        "description": "This endpoint creates a new annotation for an alarm analysis.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "description"
+                ],
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "description": "A description of the issue or feedback for the alarm analysis specified by the analysis ID."
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "description": "This was a car, not a bike."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Analytics Results"
+        ],
+        "security": [
+          {
+            "CompanyToken": []
+          },
+          {
+            "IntegrationPartnerTokenWithTenantId": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "fgysdwz19hie1"
+        }
+      }
+    },
+    "/analyses": {
+      "parameters": [
+        {
+          "name": "startTime",
+          "description": "Start time to use when querying analyses.",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "endTime",
+          "description": "End time to use when querying analyses.",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "siteId",
+          "description": "Site ID to use when querying analyses.",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "viewId",
+          "description": "View ID to use when querying analyses.",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get analyses",
+        "operationId": "getAnalyses",
+        "responses": {
+          "200": {
+            "description": "Returned when the analyses were successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AnalysisResults.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint retrieves all analyses that occurred between the specified start and end times. The start and end times are inclusive.",
+        "tags": [
+          "Analytics Results"
+        ],
+        "security": [
+          {
+            "CompanyToken": []
+          },
+          {
+            "IntegrationPartnerTokenWithTenantId": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "idji5aan1maeu"
+        }
+      }
+    },
+    "/analyses/{analysisId}": {
+      "parameters": [
+        {
+          "name": "analysisId",
+          "description": "An ID provided by the requestor which uniquely identifies an analysis result",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get an analysis result",
+        "x-stoplight": {
+          "id": "kz3553ij8t5zu"
+        },
+        "operationId": "getAnalysis",
+        "description": "This endpoint retrieves a specific analysis result by its ID. The analysis ID is returned when an analysis is performed and can be used as an input to this endpoint.",
+        "responses": {
+          "200": {
+            "description": "Returned when the analysis was successfully retrieved.",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "./schemas/AnalysisResult.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request does not conform to the expected schema or contains invalid parameters",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forbidden403"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Analytics Results"
+        ],
+        "security": [
+          {
+            "CompanyToken": []
+          },
+          {
+            "IntegrationPartnerTokenWithTenantId": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Forbidden403": {
+        "title": "Forbidden 403",
+        "type": "object",
+        "description": "Returned when the user encoded in the token does not have the correct privileges.",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "status",
+                "detail"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "403"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "403",
+                "detail": "Forbidden"
+              }
+            ]
+          }
+        ],
+        "x-stoplight": {
+          "id": "ezm6iprjij6el"
+        }
+      },
+      "NotFound404": {
+        "title": "Not Found 404",
+        "type": "object",
+        "description": "Returned when the requested resource cannot be found.",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "status",
+                "detail"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "404"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "404",
+                "detail": "Resource not found"
+              }
+            ]
+          }
+        ],
+        "x-stoplight": {
+          "id": "2862djsccn2gu"
+        }
+      },
+      "Unauthorized401": {
+        "title": "Unauthorized 401",
+        "type": "object",
+        "description": "Returned when the authentication token is missing, invalid, or expired.",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "status",
+                "detail"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "401"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "401",
+                "detail": "Unauthorized - Invalid or expired token"
+              }
+            ]
+          }
+        ]
+      },
+      "InternalServerError500": {
+        "title": "Internal Server Error 500",
+        "type": "object",
+        "description": "Returned when an unexpected error occurs on the server.",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "status",
+                "detail"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "500"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "500",
+                "detail": "Internal server error"
+              }
+            ]
+          }
+        ]
+      },
+      "BadRequest400": {
+        "title": "Bad Request 400",
+        "type": "object",
+        "description": "Returned when the request does not conform to the expected schema or contains invalid parameters.",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "status",
+                "detail"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "400"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "400",
+                "detail": "Invalid request format"
+              }
+            ]
+          }
+        ]
+      },
+      "ServiceUnavailable503": {
+        "title": "Service Unavailable 503",
+        "type": "object",
+        "description": "Returned when the service is temporarily unavailable, typically due to maintenance or overload.",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "status",
+                "detail"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "503"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "examples": [
+          {
+            "errors": [
+              {
+                "status": "503",
+                "detail": "Service unavailable"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "CompanyToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use this token to perform analytics associated with the company identified by this token."
+      },
+      "IntegrationPartnerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use this token to create, maintain, and delete companies (tenants) in the AI Platform."
+      },
+      "IntegrationPartnerTokenWithTenantId": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Use this token to perform analytics associated with the company identified by an included `X-Tenant-Integrator-ID` HTTP header, wholly managed by the integration partner represented in this token. If such a company does not yet exist, it will be created."
+      }
+    }
+  },
+  "x-internal": false,
+  "tags": [
+    {
+      "name": "Analytics Results",
+      "description": "Retrieve previous analyses based on parameters"
+    },
+    {
+      "name": "Analytics via Integrator ID",
+      "description": "Perform analysis for provided images and options"
+    },
+    {
+      "name": "Tenant Management",
+      "description": "Create and manage tenants for the platform"
+    }
+  ]
+}

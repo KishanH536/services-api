@@ -1,0 +1,23 @@
+{
+  "title": "Success Collection",
+  "x-stoplight": {
+    "id": "fz15gghi83osh"
+  },
+  "description": "Base data object for JSON:API responses that are collections of resources.",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "$ref": "./DataCollection.json"
+    },
+    "links": {
+      "$ref": "./Links.json"
+    },
+    "included": {
+      "$ref": "./IncludedCollection.json"
+    }
+  },
+  "additionalProperties": false
+}

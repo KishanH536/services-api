@@ -1,0 +1,18 @@
+{
+  "title": "Meta",
+  "x-stoplight": {
+    "id": "voismmzqx14o1"
+  },
+  "x-tags": [
+    "JSON:API"
+  ],
+  "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+  "type": "object",
+  "additionalProperties": true,
+  "examples": [
+    {
+      "lastUpdatedAt": "2022-01-02T17:32:43.381Z",
+      "authoredBy": "Boaty McBoatface"
+    }
+  ]
+}

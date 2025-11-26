@@ -1,0 +1,14 @@
+{
+  "title": "Integrator ID",
+  "x-stoplight": {
+    "id": "kb87q49c1qpmx"
+  },
+  "description": "A unique identifier, provided by the integrator",
+  "type": "string",
+  "minLength": 1,
+  "maxLength": 100,
+  "examples": [
+    "sn31789-3891",
+    "Integrator IDs can have spaces!"
+  ]
+}

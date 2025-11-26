@@ -1,0 +1,268 @@
+{
+  "title": "Alarm Analysis",
+  "description": "Contains results of an analysis against its currently defined set of rules",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json",
+      "description": "Properties from the base JSON:API data object"
+    },
+    {
+      "type": "object",
+      "description": "Unique properties of an analysis",
+      "properties": {
+        "data": {
+          "properties": {
+            "id": {},
+            "type": {
+              "description": "Indicates that this resource is an analysis",
+              "const": "alarm-analysis"
+            },
+            "attributes": {
+              "properties": {
+                "analytics": {
+                  "description": "Contains all analytics performed for this alarm",
+                  "type": "object",
+                  "properties": {
+                    "resultSummary": {
+                      "description": "Contains a determination summary of valid detections",
+                      "$ref": "./DetectionResult.json"
+                    },
+                    "resultSummaries": {
+                      "description": "For each analysis performed, a summary of the processing results",
+                      "$ref": "./ResultSummaries.json"
+                    },
+                    "objectDetection": {
+                      "description": "Contains analytics results from the objectDetection algorithm",
+                      "type": "object",
+                      "properties": {
+                        "boundingBoxes": {
+                          "description": "A list of bounding box collections corresponding to each image analyzed (in the order they were provided)",
+                          "type": "array",
+                          "items": {
+                            "description": "A bounding box collection for a given image",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./ObjectBoundingBox.json"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "faceAnalysis": {
+                      "description": "Contains analytics results from the face detection algorithm",
+                      "type": "object",
+                      "properties": {
+                        "paravisionVersion": {
+                          "description": "The version of the Paravision face detection model used to analyze this alarm",
+                          "type": "string"
+                        },
+                        "faces": {
+                          "description": "A list of faces corresponding to each image analyzed",
+                          "type": "array",
+                          "items": {
+                            "description": "A list of faces for a given image",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./FaceSummary.json"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "vehicleAnalysis": {
+                      "description": "Contains list of results from the LPR and vehicle analysis algorithms, one list element per image processed",
+                      "type": "array",
+                      "items": {
+                        "description": "Result for processing of one image",
+                        "type": "object",
+                        "properties": {
+                          "vehicles": {
+                            "type": "array",
+                            "description": "A list of vehicles, one for each vehicle detected and analyzed",
+                            "items": {
+                              "$ref": "./VehicleSummaryFullFrame.json"
+                            }
+                          },
+                          "plates": {
+                            "type": "array",
+                            "description": "A list of plates, one for each plate detected and analyzed",
+                            "items": {
+                              "$ref": "./PlateSummaryFullFrame.json"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "personAnalysis": {
+                      "description": "Contains list of results from the person analysis algorithms, one list element per image processed",
+                      "type": "array",
+                      "items": {
+                        "description": "Results for processing a single image. Each element is a list of persons for the processed image.",
+                        "type": "object",
+                        "properties": {
+                          "persons": {
+                            "description": "A list of persons, one for each person detected and analyzed",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./PersonSummaryFullFrame.json"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "sceneClassification": {
+                      "description": "Contains list of results from the scene classification algorithm, one list element per image processed",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "description": "A summary of scene classification results for full-frame image",
+                        "properties": {
+                          "objectLabels": {
+                            "description": "A list of object labels for the image",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "examples": [
+                              [
+                                "highway",
+                                "intersection",
+                                "parkOrGreenSpace",
+                                "perimeterOrFence"
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "multipleRiskAnalysis": {
+                      "description": "Contains results from the security risk and environmental hazard analysis algorithms.",
+                      "type": "object",
+                      "properties": {
+                        "riskDetected": {
+                          "description": "Describes whether a risk was detected in the images",
+                          "$ref": "./DetectionResult.json"
+                        },
+                        "securityRisk": {
+                          "description": "Contains results from the security risk analysis algorithm",
+                          "type": "object",
+                          "properties": {
+                            "risk": {
+                              "description": "Describes whether a risk was detected",
+                              "$ref": "./DetectionResult.json"
+                            },
+                            "description": {
+                              "description": "Contains details about the image and, if applicable, the risk detected",
+                              "type": "string"
+                            },
+                            "categories": {
+                              "type": "object",
+                              "description": "Includes information about which categories are applicable to the detected security risk. Only set if `risk` is `valid`. May also not be present if `valid` is true, which indicates that the security risk is uncategorized.",
+                              "properties": {
+                                "personLyingDown": {
+                                  "type": "object"
+                                },
+                                "personFalling": {
+                                  "type": "object"
+                                },
+                                "unattendedBaggage": {
+                                  "type": "object"
+                                },
+                                "crowd": {
+                                  "type": "object"
+                                },
+                                "aggressiveBehavior": {
+                                  "type": "object"
+                                },
+                                "personClimbing": {
+                                  "type": "object"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "environmentalHazard": {
+                          "description": "Contains results from the environmental hazard analysis algorithm",
+                          "type": "object",
+                          "properties": {
+                            "hazard": {
+                              "description": "Describes whether a hazard was detected",
+                              "$ref": "./DetectionResult.json"
+                            },
+                            "description": {
+                              "description": "Contains details about the image and, if applicable, the hazard detected",
+                              "type": "string"
+                            },
+                            "categories": {
+                              "type": "object",
+                              "x-stoplight": {
+                                "id": "ej6rs3a1hg68l"
+                              },
+                              "description": "Includes information about which categories the environmental hazard detected. Only set if `hazard` is `valid`. May also not be present if `hazard` is `valid`, which indicates that the environmental hazard is uncategorized.",
+                              "properties": {
+                                "smokeFire": {
+                                  "type": "object"
+                                },
+                                "brokenWindow": {
+                                  "type": "object"
+                                },
+                                "obstructedDoor": {
+                                  "type": "object"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "sceneChange": {
+                  "description": "Describes results from the scene change detection algorithm",
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "description": "Describes whether a scene change was detected",
+                      "$ref": "./DetectionResult.json"
+                    },
+                    "details": {
+                      "description": "Contains details about the scene change detection if a scene change was detected",
+                      "type": "object",
+                      "properties": {
+                        "blur": {
+                          "description": "Describes whether the scene change was due to blur",
+                          "type": "boolean"
+                        },
+                        "imageShift": {
+                          "description": "Describes whether the scene change was due to the view shifting slightly / otherwise having a near total obstruction",
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "reason": {
+                      "description": "Describes the reason for not performing the scene change detection",
+                      "type": "object"
+                    },
+                    "reference": {
+                      "description": "Contains the reference image information used for scene change detection. Will contain either a `url` or `id` property, depending on how the reference image was provided.",
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "description": "URL of the reference image",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "title": "Full-Frame Analysis Options",
+  "x-stoplight": {
+    "id": "8b3b8690dcc2d"
+  },
+  "description": "Directives for performing full-frame analysis",
+  "type": "object",
+  "examples": [
+    {
+      "analytics": {
+        "vehicleAnalysis": {},
+        "personAnalysis": {},
+        "faceDetection": {},
+        "sceneChangeDetection": {
+          "referenceUrls": [
+            "https://example.com/image5/daytime-ref",
+            "https://example.com/image5/nighttime-ref"
+          ]
+        }
+      },
+      "context": {
+        "projectExternalId": "Default Project",
+        "siteExternalId": "HQ",
+        "viewExternalId": "Alleyway 5",
+        "daysToRetainData": 30
+      }
+    }
+  ],
+  "required": [
+    "analytics",
+    "context"
+  ],
+  "properties": {
+    "analytics": {
+      "description": "Contains all analytic options to perform in this request. When each is included, it indicates that the particular analysis should be performed on the images supplied in the request.",
+      "type": "object",
+      "x-stoplight": {
+        "id": "5ulut6jwky1n3"
+      },
+      "properties": {
+        "vehicleAnalysis": {
+          "type": "object",
+          "description": "Include vehicle analysis in the response.",
+          "additionalProperties": false,
+          "x-stoplight": {
+            "id": "d0zmxeiqyhl3z"
+          }
+        },
+        "personAnalysis": {
+          "description": "Include person analysis in the response.",
+          "type": "object",
+          "additionalProperties": false,
+          "x-stoplight": {
+            "id": "gfig3112fhuoc"
+          }
+        },
+        "faceDetection": {
+          "description": "Include face detection in the response.",
+          "type": "object",
+          "additionalProperties": false,
+          "x-stoplight": {
+            "id": "mjgx334q2f57y"
+          }
+        },
+        "sceneChangeDetection": {
+          "description": "Include scene change detection in the response.",
+          "type": "object",
+          "additionalProperties": false,
+          "x-stoplight": {
+            "id": "pwxowe32wl21w"
+          },
+          "properties": {
+            "referenceUrls": {
+              "type": "array",
+              "x-stoplight": {
+                "id": "gd9e00hseces4"
+              },
+              "description": "Images that represent \"expected state\" to be compared against the current images supplied for this analysis.",
+              "items": {
+                "x-stoplight": {
+                  "id": "a9m3myoae52d9"
+                },
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        },
+        "sceneClassification": {
+          "description": "Include scene classification in the response.",
+          "type": "object",
+          "additionalProperties": false,
+          "x-stoplight": {
+            "id": "wrjf4j69m6qbq"
+          }
+        },
+        "multipleRiskAnalysis": {
+          "description": "Include multiple risk analysis in the response.",
+          "type": "object",
+          "additionalProperties": false,
+          "x-stoplight": {
+            "id": "30c82xsf1uzzb"
+          }
+        }
+      }
+    },
+    "context": {
+      "$ref": "./AnalysisContext.json",
+      "x-stoplight": {
+        "id": "kk096mf8zt6av"
+      }
+    }
+  }
+}

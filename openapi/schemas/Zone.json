@@ -1,0 +1,28 @@
+{
+  "description": "A single zone where detections should be performed.",
+  "type": "array",
+  "minItems": 3,
+  "items": {
+    "$ref": "./Coordinate.json"
+  },
+  "examples": [
+    [
+      [
+        0,
+        0
+      ],
+      [
+        0.5,
+        0
+      ],
+      [
+        0.5,
+        1
+      ],
+      [
+        0,
+        1
+      ]
+    ]
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Result Summaries",
+  "x-stoplight": {
+    "id": "ezhhzx5zttpyw"
+  },
+  "description": "For each analysis type requested, a summary of the processing results.",
+  "type": "object",
+  "properties": {
+    "vehicleAnalysis": {
+      "description": "Result summary for vehicle analysis",
+      "type": "object",
+      "$ref": "./ResultSummary.json",
+      "x-stoplight": {
+        "id": "96wo7eikz0lmh"
+      }
+    },
+    "personAnalysis": {
+      "description": "Result summary for person analysis",
+      "type": "object",
+      "$ref": "./ResultSummary.json",
+      "x-stoplight": {
+        "id": "welb6xhxc1afh"
+      }
+    },
+    "sceneClassification": {
+      "description": "Result summary for scene classification",
+      "type": "object",
+      "$ref": "./ResultSummary.json",
+      "x-stoplight": {
+        "id": "k8svhe7gh9d3x"
+      }
+    },
+    "multipleRiskAnalysis": {
+      "description": "Result summary for multiple risk analysis",
+      "type": "object",
+      "$ref": "./ResultSummary.json",
+      "x-stoplight": {
+        "id": "n9vfpd2vk1ige"
+      }
+    }
+  }
+}

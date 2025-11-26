@@ -1,0 +1,69 @@
+{
+  "title": "Person Summary for Chip Processing",
+  "description": "A summary of a person analyzed from a chip image",
+  "type": "object",
+  "examples": [
+    {
+      "child": true,
+      "gender": "male",
+      "wearingHardHat": false,
+      "highlyVisible": false,
+      "hairColor": [
+        "Black"
+      ],
+      "clothesUpperBodyColor": [
+        "Blue",
+        "Red"
+      ],
+      "clothesLowerBodyColor": [
+        "Gray"
+      ]
+    }
+  ],
+  "properties": {
+    "child": {
+      "description": "Indicates whether the person is a child",
+      "type": "boolean"
+    },
+    "gender": {
+      "description": "String indicating the gender of the person",
+      "enum": [
+        "male",
+        "female",
+        "nonbinary"
+      ]
+    },
+    "wearingHardHat": {
+      "description": "Indicates whether person is wearing a hard hat",
+      "type": "boolean"
+    },
+    "highlyVisible": {
+      "description": "Indicates whether person is wearing highly-visible clothing (such as a construction vest)",
+      "type": "boolean"
+    },
+    "hairColor": {
+      "description": "Indicates the person's hair color",
+      "type": "array",
+      "items": {
+        "description": "One color detected",
+        "type": "string"
+      }
+    },
+    "clothesUpperBodyColor": {
+      "description": "Indicates colors found on the person's upper body",
+      "type": "array",
+      "items": {
+        "description": "One color detected",
+        "type": "string"
+      }
+    },
+    "clothesLowerBodyColor": {
+      "description": "Indicates colors found on the person's lower body",
+      "type": "array",
+      "items": {
+        "description": "One color detected",
+        "type": "string"
+      }
+    }
+  }
+}

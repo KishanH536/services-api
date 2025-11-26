@@ -1,0 +1,120 @@
+{
+  "title": "Chip Analysis",
+  "description": "Contains results of analyzing a chip against a defined set of rules",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json",
+      "description": "Properties from the base JSON:API data object"
+    },
+    {
+      "type": "object",
+      "description": "Unique properties of a chip analysis",
+      "properties": {
+        "data": {
+          "properties": {
+            "id": {},
+            "type": {
+              "description": "Indicates that this resource is an analysis",
+              "const": "alarm-analysis"
+            },
+            "attributes": {
+              "properties": {
+                "analytics": {
+                  "description": "Contains all analytics performed for this chip",
+                  "type": "object",
+                  "properties": {
+                    "resultSummary": {
+                      "description": "Contains a determination summary of valid detections",
+                      "$ref": "./DetectionResult.json"
+                    },
+                    "faceDetection": {
+                      "description": "Contains analytics results from the face detection algorithm",
+                      "type": "object",
+                      "properties": {
+                        "paravisionVersion": {
+                          "description": "The version of the Paravision face detection model used to analyze this alarm",
+                          "type": "string"
+                        },
+                        "faces": {
+                          "description": "A list of faces corresponding to each image analyzed",
+                          "type": "array",
+                          "items": {
+                            "description": "A list of faces for a given image",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./FaceSummary.json"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "vehicleAnalysis": {
+                      "description": "Contains results from the LPR and vehicle analysis algorithms",
+                      "type": "object",
+                      "properties": {
+                        "vehicles": {
+                          "type": "array",
+                          "description": "A list of vehicles, one for each image analyzed",
+                          "items": {
+                            "$ref": "./VehicleSummaryChips.json"
+                          }
+                        },
+                        "plates": {
+                          "type": "array",
+                          "description": "A list of plates, one for each image analyzed",
+                          "items": {
+                            "$ref": "./PlateSummaryChips.json"
+                          }
+                        }
+                      }
+                    },
+                    "personAnalysis": {
+                      "description": "A list of results from the person analysis algorithm, one for each image processed",
+                      "type": "array",
+                      "items": {
+                        "$ref": "./PersonSummaryChips.json"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "data": {
+        "id": "0199e2fb-c0a7-7362-9bc8-149f4c731f39",
+        "type": "alarm-analysis",
+        "attributes": {
+          "analytics": {
+            "resultSummary": "valid",
+            "faceDetection": {
+              "paravisionVersion": "6",
+              "faces": [
+                [
+                  {
+                    "acceptability": 1,
+                    "quality": 1,
+                    "box": {
+                      "x1": 0,
+                      "y1": 0,
+                      "x2": 1,
+                      "y2": 1
+                    },
+                    "embedding": [
+                      0
+                    ]
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

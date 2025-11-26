@@ -1,0 +1,28 @@
+{
+  "title": "AnalysisResult",
+  "x-stoplight": {
+    "id": "4oj6780b10unn"
+  },
+  "description": "A single analysis result resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json",
+      "x-stoplight": {
+        "id": "fjfjkpw8gicx4"
+      }
+    },
+    {
+      "properties": {
+        "data": {
+          "$ref": "./AnalysisResultResource.json",
+          "x-stoplight": {
+            "id": "2m980phvjbx90"
+          }
+        }
+      },
+      "x-stoplight": {
+        "id": "qd5348cm5nh0k"
+      }
+    }
+  ]
+}

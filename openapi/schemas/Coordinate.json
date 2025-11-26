@@ -1,0 +1,21 @@
+{
+  "title": "Coordinate",
+  "x-stoplight": {
+    "id": "k4enobk8x456e"
+  },
+  "description": "A two-element array, [x, y], representing a coordinate point on a plane whose values are expressed in relative percentage of the given width/height. 0 for the first value indicates the leftmost position; 0 for the second value indicates the topmost position.",
+  "type": "array",
+  "minItems": 2,
+  "maxItems": 2,
+  "examples": [
+    [
+      0.2,
+      0.5
+    ]
+  ],
+  "items": {
+    "type": "number",
+    "maximum": 1,
+    "minimum": 0
+  }
+}

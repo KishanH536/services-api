@@ -1,0 +1,42 @@
+{
+  "title": "Link",
+  "x-stoplight": {
+    "id": "sjwrfj6587jou"
+  },
+  "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object",
+  "oneOf": [
+    {
+      "description": "A string containing the link's URL.",
+      "type": "string",
+      "format": "uri-reference",
+      "x-stoplight": {
+        "id": "g833onqxjiy9k"
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "href": {
+          "description": "A string containing the link's URL.",
+          "type": "string",
+          "format": "uri-reference",
+          "x-stoplight": {
+            "id": "cackzms2grdg8"
+          }
+        },
+        "meta": {
+          "$ref": "./Meta.json"
+        }
+      },
+      "required": [
+        "href"
+      ],
+      "x-stoplight": {
+        "id": "5ozvn4ow60vew"
+      }
+    }
+  ],
+  "x-tags": [
+    "JSON:API"
+  ]
+}

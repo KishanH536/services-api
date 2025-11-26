@@ -1,0 +1,38 @@
+{
+  "title": "Analysis Context",
+  "x-stoplight": {
+    "id": "juwl35k40zljq"
+  },
+  "type": "object",
+  "required": [
+    "projectExternalId",
+    "siteExternalId",
+    "viewExternalId",
+    "daysToRetainData"
+  ],
+  "properties": {
+    "projectExternalId": {
+      "$ref": "../IntegratorId.json",
+      "x-stoplight": {
+        "id": "euxn8hqqhuu3o"
+      }
+    },
+    "siteExternalId": {
+      "$ref": "../IntegratorId.json",
+      "x-stoplight": {
+        "id": "8a1u0p1xx18fh"
+      }
+    },
+    "viewExternalId": {
+      "$ref": "../IntegratorId.json",
+      "x-stoplight": {
+        "id": "ku3oa5n7kulid"
+      }
+    },
+    "daysToRetainData": {
+      "$ref": "../RetentionDays.json",
+      "description": "The number of days to retain images associated with this analysis."
+    }
+  },
+  "description": "Provides the context in which the analysis request is being made. This requires the requestor to provide integrator-style IDs for project, site, and view, as well as an explicit requirement to state the number of days the images will be stored."
+}

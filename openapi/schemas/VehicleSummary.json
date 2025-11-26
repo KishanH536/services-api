@@ -1,0 +1,39 @@
+{
+  "title": "Vehicle Summary",
+  "description": "A summary of a vehicle analysis",
+  "type": "object",
+  "properties": {
+    "vehicleType": {
+      "description": "A string indicating vehicle type",
+      "type": "string"
+    },
+    "color": {
+      "description": "A string indicating vehicle color",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "A string indicating one of the colors detected for this vehicle"
+      }
+    },
+    "makeModel": {
+      "description": "A string indicating vehicle make and model",
+      "type": "string"
+    },
+    "embedding": {
+      "description": "When enabled, the embedding for the detected vehicle.",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  },
+  "examples": [
+    {
+      "vehicleType": "sedan",
+      "color": [
+        "black"
+      ],
+      "makeModel": "toyota_rav4"
+    }
+  ]
+}

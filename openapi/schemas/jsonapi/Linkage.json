@@ -1,0 +1,24 @@
+{
+  "title": "Linkage",
+  "x-stoplight": {
+    "id": "0jxx23rgqhtb5"
+  },
+  "description": "The \"type\" and \"id\" to non-empty members.",
+  "type": "object",
+  "required": [
+    "type",
+    "id"
+  ],
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "meta": {
+      "$ref": "./Meta.json"
+    }
+  },
+  "additionalProperties": false
+}

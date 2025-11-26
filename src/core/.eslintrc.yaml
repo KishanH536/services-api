@@ -1,0 +1,7 @@
+rules:
+  no-param-reassign:
+    - error
+    - props: false
+  max-params:
+    - error
+    - 7

@@ -1,0 +1,23 @@
+{
+  "title": "Success",
+  "x-stoplight": {
+    "id": "z379p4zgrciyt"
+  },
+  "description": "Base data object for JSON:API responses",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "$ref": "./Data.json"
+    },
+    "links": {
+      "$ref": "./Links.json"
+    },
+    "included": {
+      "$ref": "./IncludedCollection.json"
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

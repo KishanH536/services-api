@@ -1,0 +1,11 @@
+{
+  "title": "Chips Images",
+  "type": "array",
+  "description": "A series of images in JPEG format. The following size restrictions apply:\n * Vehicle chips minimum dimensions 150x150 pixels\n * Person chips minimum dimensions 40x100 (WxH) pixels\n * Gun chips minimum dimensions 35x35 pixels",
+  "minItems": 1,
+  "maxItems": 8,
+  "items": {
+    "type": "string",
+    "format": "binary"
+  }
+}

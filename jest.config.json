@@ -1,0 +1,29 @@
+{
+  "modulePathIgnorePatterns": [
+    "__tests__/utils"
+  ],
+  "verbose": true,
+  "setupFilesAfterEnv": [
+    "./jest.setup.js"
+  ],
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "./src/**"
+  ],
+  "coverageReporters": [
+    "clover",
+    "json",
+    "lcov",
+    "text",
+    "json-summary"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 65,
+      "functions": 65,
+      "lines": 65,
+      "statements": 65
+    }
+  },
+  "testTimeout": 60000
+}

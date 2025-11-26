@@ -1,0 +1,26 @@
+{
+  "title": "Errors",
+  "x-stoplight": {
+    "id": "pavxrjkf6l0a3"
+  },
+  "type": "object",
+  "required": [
+    "errors"
+  ],
+  "properties": {
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "./Error.json"
+      },
+      "uniqueItems": true,
+      "x-stoplight": {
+        "id": "147peoyqojpl2"
+      }
+    },
+    "links": {
+      "$ref": "./Links.json"
+    }
+  },
+  "additionalProperties": false
+}

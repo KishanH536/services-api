@@ -1,0 +1,58 @@
+{
+  "title": "CompanyResource",
+  "x-stoplight": {
+    "id": "qjm86znubf1hh"
+  },
+  "description": "A single company resource",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json"
+    },
+    {
+      "properties": {
+        "id": {},
+        "type": {
+          "const": "company"
+        },
+        "attributes": {
+          "properties": {
+            "displayName": {
+              "description": "The displayable name of the company.",
+              "type": "string"
+            },
+            "capabilities": {
+              "type": "array",
+              "description": "A list of capabilities assigned to this company. The current valid set is: {'detect_face','detect_gun','forensic_search', 'detect_scene_change', 'vehicle_analytics', 'vehicle_analytics.embeddings', 'person_analytics', 'person_analytics.embeddings', 'scene_classification', 'multiple_risk_analysis'}",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "daysToRetainData": {
+              "type": "integer",
+              "description": "The number of days to retain alarm and chip data for this company. This includes alarm and chip images and the associated analysis result, if applicable. Setting this to 0 means that no images will be stored on MCAP.",
+              "minimum": 0,
+              "maximum": 30
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "id": "661cf148-d5ae-455e-84ed-d954787cbda6",
+      "type": "company",
+      "attributes": {
+        "displayName": "Rafael's Hardware",
+        "capabilities": [
+          "faceDetect",
+          "gunDetect"
+        ]
+      },
+      "links": {
+        "self": "/services/companies/661cf148-d5ae-455e-84ed-d954787cbda6"
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Vehicle Summary for Full-Frame Processing",
+  "x-stoplight": {
+    "id": "cmdhyvw8jeyzv"
+  },
+  "description": "A summary of a vehicle analyzed from a full-frame image",
+  "type": "object",
+  "properties": {
+    "boundingBox": {
+      "$ref": "./BoundingBox.json",
+      "x-stoplight": {
+        "id": "9wfdkizotqh2q"
+      }
+    },
+    "objectLabel": {
+      "type": "string",
+      "description": "Type of object detected",
+      "x-stoplight": {
+        "id": "twrkou9gtmcub"
+      }
+    },
+    "attributes": {
+      "$ref": "./VehicleSummary.json",
+      "x-stoplight": {
+        "id": "hpbxfdzjmq0uj"
+      }
+    }
+  },
+  "examples": [
+    {
+      "boundingBox": {
+        "x1": 0.1,
+        "y1": 0.2,
+        "x2": 0.5,
+        "y2": 0.6
+      },
+      "objectLabel": "vehicle",
+      "attributes": {
+        "vehicleType": "sedan",
+        "color": [
+          "black"
+        ],
+        "makeModel": "toyota_rav4"
+      }
+    }
+  ]
+}

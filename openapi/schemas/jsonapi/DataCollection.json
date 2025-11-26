@@ -1,0 +1,12 @@
+{
+  "title": "Data Collection",
+  "x-stoplight": {
+    "id": "54p4gdfdts360"
+  },
+  "description": "An array of resource objects, an array of resource identifier objects, or an empty array ([]), for requests that target resource collections.",
+  "type": "array",
+  "items": {
+    "$ref": "./Resource.json"
+  },
+  "uniqueItems": true
+}

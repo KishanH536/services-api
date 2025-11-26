@@ -1,0 +1,19 @@
+{
+  "title": "WatchList Item Resource",
+  "description": "A single item in a watchlist resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json"
+    },
+    {
+      "properties": {
+        "id": {},
+        "type": {
+          "const": "watchlist-item"
+        },
+        "links": {}
+      },
+      "additionalProperties": false
+    }
+  ]
+}

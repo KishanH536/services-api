@@ -1,0 +1,43 @@
+{
+  "title": "Plate Summary for Full-Frame Processing",
+  "x-stoplight": {
+    "id": "6xmxwmyvb43hy"
+  },
+  "description": "A summary of a license plate analyzed from a full-frame image",
+  "type": "object",
+  "properties": {
+    "boundingBox": {
+      "$ref": "./BoundingBox.json"
+    },
+    "objectLabel": {
+      "type": "string",
+      "description": "Type of object detected. Always \"plate\""
+    },
+    "vehicleId": {
+      "type": "integer",
+      "description": "Index of vehicle in image to which the plate belongs (default -1)"
+    },
+    "attributes": {
+      "$ref": "./PlateSummary.json"
+    }
+  },
+  "examples": [
+    {
+      "boundingBox": {
+        "x1": 0.3,
+        "y1": 0.5,
+        "x2": 0.7,
+        "y2": 0.6
+      },
+      "objectLabel": "plate",
+      "vehicleId": 0,
+      "attributes": {
+        "quality": "readable",
+        "text": "2U4355",
+        "ranking": 0.95,
+        "rating": "high",
+        "state": "SD"
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Face Detection",
+  "description": "Face detection configuration for the rule.",
+  "type": "object",
+  "x-stoplight": {
+    "id": "l5dv1fdqf82fz"
+  }
+}

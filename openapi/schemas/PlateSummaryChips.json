@@ -1,0 +1,13 @@
+{
+  "title": "Plate Summary for Chip Processing",
+  "description": "A summary of a license plate analyzed from a chip image",
+  "type": "object",
+  "$ref": "./PlateSummary.json",
+  "examples": [
+    {
+      "quality": "readable",
+      "text": "2U4355",
+      "state": "SD"
+    }
+  ]
+}

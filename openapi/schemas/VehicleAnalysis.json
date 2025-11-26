@@ -1,0 +1,20 @@
+{
+  "title": "Vehicle Analysis",
+  "description": "Vehicle analysis configuration for the rule.",
+  "type": "object",
+  "examples": [
+    {
+      "chipsType": "plates"
+    }
+  ],
+  "properties": {
+    "chipsType": {
+      "description": "Specify what type of chip processing to perform on this view. Only one type of chips analysis for vehicles may be configured. Options are 'plates' or 'vehicles'. If `chipsType` is not specified, `plates` is the default.",
+      "type": "string",
+      "enum": [
+        "plates",
+        "vehicles"
+      ]
+    }
+  }
+}

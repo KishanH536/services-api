@@ -1,0 +1,81 @@
+{
+  "collapseTableOfContents": true,
+  "items": [
+    {
+      "type": "group",
+      "title": "Topics",
+      "items": [
+        {
+          "type": "item",
+          "title": "Basic Concepts",
+          "uri": "/openapi/docs/topics/01-basic-concepts.md"
+        },
+        {
+          "type": "item",
+          "title": "Company Configuration",
+          "uri": "/openapi/docs/topics/02-company-configuration.md"
+        },
+        {
+          "type": "item",
+          "title": "Feature Configuration",
+          "uri": "/openapi/docs/topics/03-feature-configuration.md"
+        },
+        {
+          "type": "item",
+          "title": "Requests, Responses, Relations",
+          "uri": "/openapi/docs/topics/04-requests-responses-relations.md"
+        },
+        {
+          "type": "item",
+          "title": "Scene Change Detection",
+          "uri": "/openapi/docs/topics/05-scene-change-detection.md"
+        },
+        {
+          "type": "item",
+          "title": "Vehicle Analysis",
+          "uri": "/openapi/docs/topics/06-vehicle-analysis.md"
+        },
+        {
+          "type": "item",
+          "title": "Person Analysis",
+          "uri": "/openapi/docs/topics/07-person-analysis.md"
+        },
+        {
+          "type": "item",
+          "title": "Multiple Risk Analysis",
+          "uri": "/openapi/docs/topics/08-multiple-risk-analysis.md"
+        },
+        {
+          "type": "item",
+          "title": "Gun Detection",
+          "uri": "/openapi/docs/topics/09-gun-detection.md"
+        },
+        {
+          "type": "item",
+          "title": "Face Analysis",
+          "uri": "/openapi/docs/topics/10-face-analysis.md"
+        },
+        {
+          "type": "item",
+          "title": "HTTP Usage Assumptions",
+          "uri": "/openapi/docs/topics/11-http-usage-assumptions.md"
+        },
+        {
+          "type": "item",
+          "title": "Data Type Details",
+          "uri": "/openapi/docs/topics/20-data-type-details.md"
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "title": "Image Analysis API",
+      "uri": "/openapi/perception.json"
+    },
+    {
+      "type": "item",
+      "title": "Platform Services API",
+      "uri": "/openapi/index.json"
+    }
+  ]
+}

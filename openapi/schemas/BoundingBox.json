@@ -1,0 +1,31 @@
+{
+  "title": "Bounding Box",
+  "description": "A bounding box for indicating where a specific object is located on a given image",
+  "type": "object",
+  "properties": {
+    "x1": {
+      "description": "The starting x coordinate, expressed as a decimal fraction of the image's total width",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "y1": {
+      "description": "The starting y coordinate, expressed as a decimal fraction of the image's total height",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "x2": {
+      "description": "The ending x coordinate, expressed as a decimal fraction of the image's total width",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "y2": {
+      "description": "The ending y coordinate, expressed as a decimal fraction of the image's total height",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

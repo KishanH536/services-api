@@ -1,0 +1,24 @@
+{
+  "title": "Chip URLs for Analysis",
+  "x-stoplight": {
+    "id": "l9rvi6cvgr5lw"
+  },
+  "type": "array",
+  "description": "A list of chip URLs pointing to JPEG format images.  To achieve the best quality of analysis results, the following size recommendations should be followed:\n * Vehicle chips minimum dimensions 150x150 pixels\n * Person chips minimum dimensions 40x100 (WxH) pixels\n * Gun chips minimum dimensions 35x35 pixels",
+  "minItems": 1,
+  "maxItems": 8,
+  "items": {
+    "type": "string",
+    "format": "url",
+    "x-stoplight": {
+      "id": "14cikihsq0nfy"
+    }
+  },
+  "examples": [
+    [
+      "https://imageserver.org/path/to/chiptoanalyze1",
+      "https://imageserver.org/path/to/chiptoanalyze2",
+      "https://imageserver.org/path/to/chiptoanalyze3"
+    ]
+  ]
+}

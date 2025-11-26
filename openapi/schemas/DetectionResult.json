@@ -1,0 +1,10 @@
+{
+  "title": "Detection Result",
+  "description": "Describes whether this algorithm determined if there was a valid detection",
+  "type": "string",
+  "enum": [
+    "valid",
+    "not_valid",
+    "not_performed"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Client Resource",
+  "x-stoplight": {
+    "id": "zxoac4thvwsb6"
+  },
+  "description": "A single client resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json",
+      "x-stoplight": {
+        "id": "149e8115a5xyb"
+      }
+    }
+  ]
+}

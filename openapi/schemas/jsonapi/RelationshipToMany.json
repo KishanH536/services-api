@@ -1,0 +1,12 @@
+{
+  "title": "RelationshipToMany",
+  "x-stoplight": {
+    "id": "sgwk2l8jun1bu"
+  },
+  "description": "An array of objects each containing \"type\" and \"id\" members for to-many relationships.",
+  "type": "array",
+  "items": {
+    "$ref": "./Linkage.json"
+  },
+  "uniqueItems": true
+}

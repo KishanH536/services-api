@@ -1,0 +1,45 @@
+{
+  "title": "Crowd Forming Detection",
+  "description": "Crowd forming detection configuration for the rule.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "period": {
+      "description": "The crowd forming time period in seconds.",
+      "type": "number"
+    },
+    "count": {
+      "description": "The number of objects to detect as a crowd. Mutually exclusive with `numberMin`/`numberMax`. Will be used if `numberOfObjectType` is `definite`.",
+      "type": "integer"
+    },
+    "numberMin": {
+      "description": "The minimum number of objects to detect as a crowd. Will be used if `numberOfObjectType` is `range`.",
+      "type": "integer"
+    },
+    "numberMax": {
+      "description": "The maximum number of objects to detect as a crowd. Will be used if `numberOfObjectType` is `range`.",
+      "type": "integer"
+    },
+    "numberOfObjectType": {
+      "description": "Indicates whether the rule should use a max/min range, or a definite number of objects. Value of `range` indicates to use the max/min values.",
+      "type": "string",
+      "enum": [
+        "definite",
+        "range"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "period": 30,
+      "count": 4,
+      "numberOfObjectType": "definite"
+    },
+    {
+      "period": 30,
+      "numberMin": 2,
+      "numberMax": 8,
+      "numberOfObjectType": "range"
+    }
+  ]
+}

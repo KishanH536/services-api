@@ -1,0 +1,19 @@
+{
+  "title": "Company",
+  "x-stoplight": {
+    "id": "4tcronqr8x7jy"
+  },
+  "description": "A company represents a tenant in Calipsa.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "$ref": "./CompanyResource.json"
+        }
+      }
+    }
+  ]
+}

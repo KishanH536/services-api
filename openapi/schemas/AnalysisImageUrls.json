@@ -1,0 +1,21 @@
+{
+  "title": "Image URLs for Analysis",
+  "x-stoplight": {
+    "id": "x9y06vihu9c4e"
+  },
+  "type": "array",
+  "description": "A list of image URLs pointing to JPEG format images. Minimum image dimensions are 320x240.",
+  "minItems": 1,
+  "maxItems": 8,
+  "items": {
+    "type": "string",
+    "format": "url"
+  },
+  "examples": [
+    [
+      "https://imageserver.org/path/to/imagetoanalyze1",
+      "https://imageserver.org/path/to/imagetoanalyze2",
+      "https://imageserver.org/path/to/imagetoanalyze3"
+    ]
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "title": "Error",
+  "x-stoplight": {
+    "id": "nb2qy36xaylvf"
+  },
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier for this particular occurrence of the problem.",
+      "type": "string",
+      "x-stoplight": {
+        "id": "7pe762xg5ng6t"
+      }
+    },
+    "links": {
+      "$ref": "./Links.json",
+      "x-stoplight": {
+        "id": "xd8lkb1t8mzo5"
+      }
+    },
+    "status": {
+      "description": "The HTTP status code applicable to this problem, expressed as a string value.",
+      "type": "string",
+      "x-stoplight": {
+        "id": "c28yv8ph0hz8f"
+      }
+    },
+    "code": {
+      "description": "An application-specific error code, expressed as a string value.",
+      "type": "string",
+      "x-stoplight": {
+        "id": "swyob1lukhkni"
+      }
+    },
+    "title": {
+      "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.",
+      "type": "string",
+      "x-stoplight": {
+        "id": "v5hy3gwlknkkp"
+      }
+    },
+    "detail": {
+      "description": "A human-readable explanation specific to this occurrence of the problem.",
+      "type": "string",
+      "x-stoplight": {
+        "id": "wc845m5s0sbf6"
+      }
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "description": "A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute].",
+          "type": "string",
+          "x-stoplight": {
+            "id": "n42q14l84knz2"
+          }
+        },
+        "parameter": {
+          "description": "A string indicating which query parameter caused the error.",
+          "type": "string",
+          "x-stoplight": {
+            "id": "wa3dve4klb1hy"
+          }
+        }
+      },
+      "x-stoplight": {
+        "id": "0aeks9z0qxlzk"
+      }
+    },
+    "meta": {
+      "$ref": "./Meta.json",
+      "x-stoplight": {
+        "id": "yae0f4jhndscn"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "c6dfc585-0139-464b-855d-3a86c1056f19",
+      "status": "500",
+      "detail": "Internal Server Error"
+    },
+    {
+      "source": {
+        "pointer": "/data/attributes/firstName"
+      },
+      "title": "Invalid Attribute",
+      "detail": "First name must contain at least two characters."
+    },
+    {
+      "status": "400",
+      "detail": "must match format \"uuid\"",
+      "meta": {
+        "instancePath": "/path/clientId",
+        "schemaPath": "#/properties/path/properties/clientId/format",
+        "keyword": "format",
+        "params": {
+          "format": "uuid"
+        }
+      }
+    }
+  ]
+}

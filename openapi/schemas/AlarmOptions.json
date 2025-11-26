@@ -1,0 +1,47 @@
+{
+  "title": "Processing Options",
+  "x-stoplight": {
+    "id": "567854243exvj"
+  },
+  "description": "Options for performing analysis",
+  "type": "object",
+  "properties": {
+    "performSceneChangeDetection": {
+      "description": "Whether to perform scene change detection. If true, scene change detection will be performed. If false, scene change detection will be skipped. If not provided, the alarm processing component will determine whether or not to do scene change based on the view's configuration.",
+      "type": "boolean",
+      "x-stoplight": {
+        "id": "br944ru09q026"
+      }
+    },
+    "sceneChangeReferenceUrls": {
+      "description": "An array of reference image URLs for scene change detection. If reference URLs are provided, they will be passed to alarm processor and used as reference images in the analysis. If no URLs are provided, the reference images will be pulled from the view's scene change configuration.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri-reference"
+      }
+    },
+    "detectionTime": {
+      "description": "Time (RFC 3339) when activity and/or edge AI determined that further processing of these images should be carried out. In other words, the initial detection time.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "location": {
+      "description": "Location of mobile camera when detection occurred (in GeoJSON Point format). If camera is configured with location, this will override that value.",
+      "$ref": "./Location.json"
+    },
+    "faceChipsEmbeddingsVersion": {
+      "description": "The Paravision embeddings version to create when performing face analysis processing. The set of allowed values is: {'5', '6'}",
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "performSceneChangeDetection": true,
+      "sceneChangeReferenceUrls": [
+        "https://imageserver.org/path/to/image1",
+        "https://imageserver.org/path/to/image2"
+      ]
+    }
+  ]
+}

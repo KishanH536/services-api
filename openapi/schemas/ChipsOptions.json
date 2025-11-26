@@ -1,0 +1,81 @@
+{
+  "title": "Chips Processing Options",
+  "x-stoplight": {
+    "id": "4e6f35842ae60"
+  },
+  "description": "Options for performing chips analysis",
+  "type": "object",
+  "properties": {
+    "faceChipsEmbeddingsVersion": {
+      "description": "The Paravision embeddings version to create when performing face chips processing. The set of allowed values is: {'5', '6'}",
+      "type": "string",
+      "x-stoplight": {
+        "id": "58d6m9lvpiiuh"
+      }
+    },
+    "detectionTime": {
+      "description": "Time (RFC 3339) when activity and/or edge AI determined that further processing of these images should be carried out. In other words, the initial detection time.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "location": {
+      "description": "Location of mobile camera when detection occurred (in GeoJSON Point format). If camera is configured with location, this will override that value.",
+      "$ref": "./Location.json"
+    },
+    "analysisType": {
+      "description": "The type of analysis to perform on the chip images. Only one of the following properties should be defined, as only one analysis is carried out per request.",
+      "type": "object",
+      "properties": {
+        "gunDetection": {
+          "description": "Indicates that gun detection should be performed. Consists of an object containing any analysis-specific options. There are no analysis-specific options for gun detection.",
+          "type": "object"
+        },
+        "faceDetection": {
+          "description": "Indicates that face detection should be performed. Consists of an object containing any analysis-specific options. There are no analysis-specific options for face detection.",
+          "type": "object"
+        },
+        "personAnalysis": {
+          "description": "Indicates that person analytics should be performed. Consists of an object containing any analysis-specific options. There are no analysis-specific options for person analysis.",
+          "type": "object"
+        },
+        "vehicleAnalysis": {
+          "type": "object",
+          "description": "Indicates that vehicle analytics should be performed. Consists of an object containing any analysis-specific options. The allowable option for vehicle chips is `chipsType`. `chipsType` may be set to `vehicles` or `plates`. If `chipsType` is not specified, `plates` is the default",
+          "properties": {
+            "chipsType": {
+              "type": "string"
+            }
+          },
+          "examples": [
+            {
+              "chipsType": "plates"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "faceChipsEmbeddingsVersion": "5"
+    },
+    {
+      "analysisType": {
+        "gunDetection": {}
+      }
+    },
+    {
+      "analysisType": {
+        "personAnalysis": {}
+      }
+    },
+    {
+      "analysisType": {
+        "vehicleAnalysis": {
+          "chipsType": "vehicles",
+          "includeEmbeddings": true
+        }
+      }
+    }
+  ]
+}

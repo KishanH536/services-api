@@ -1,0 +1,68 @@
+{
+  "title": "Features Request Object",
+  "description": "An object containing an attribute for each enabled feature.",
+  "type": "object",
+  "properties": {
+    "sceneChangeDetection": {
+      "description": "Scene change detection feature information.",
+      "type": "object"
+    },
+    "objectDetection": {
+      "description": "Object detection feature information",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "humanDetection",
+        "vehicleDetection"
+      ],
+      "properties": {
+        "humanDetection": {
+          "description": "Whether human detection is enabled for the object detection feature.",
+          "type": "boolean"
+        },
+        "vehicleDetection": {
+          "description": "Whether vehicle detection is enabled for the object detection feature.",
+          "type": "boolean"
+        }
+      }
+    },
+    "forensic": {
+      "description": "Forensic feature information",
+      "type": "object",
+      "properties": {
+        "retentionTier": {
+          "enum": [
+            7,
+            15,
+            30
+          ],
+          "description": "This indicates how long in days the forensic search system will retain data before it becomes inaccessible. If unspecified, it defaults to 30."
+        }
+      }
+    },
+    "vehicleAnalysis": {
+      "description": "Vehicle analysis feature information",
+      "type": "object",
+      "$ref": "./VehicleAnalysis.json"
+    },
+    "personAnalysis": {
+      "description": "Person analysis feature information.",
+      "type": "object"
+    },
+    "sceneClassification": {
+      "description": "Scene classification feature information.",
+      "type": "object"
+    },
+    "multipleRiskAnalysis": {
+      "description": "Multiple risk analysis feature information.",
+      "type": "object"
+    },
+    "advancedRules": {
+      "description": "Advanced rule configuration for the advanced detection feature.",
+      "type": "array",
+      "items": {
+        "$ref": "./AdvancedRule.json"
+      }
+    }
+  }
+}

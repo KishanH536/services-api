@@ -1,0 +1,115 @@
+{
+  "title": "Chip Analysis Options",
+  "description": "Directives for performing chip analysis",
+  "type": "object",
+  "examples": [
+    {
+      "type": {
+        "face": {}
+      },
+      "context": {
+        "projectExternalId": "Default Project",
+        "siteExternalId": "HQ",
+        "viewExternalId": "Alleyway 5",
+        "daysToRetainData": 30
+      }
+    },
+    {
+      "type": {
+        "person": {}
+      },
+      "context": {
+        "projectExternalId": "Default Project",
+        "siteExternalId": "HQ",
+        "viewExternalId": "Alleyway 5",
+        "daysToRetainData": 30
+      }
+    }
+  ],
+  "required": [
+    "type",
+    "context"
+  ],
+  "properties": {
+    "type": {
+      "description": "Contains the type of chip supplied in this request. Exactly one must be specified.",
+      "type": "object",
+      "x-stoplight": {
+        "id": "5ulut6jwky1n3"
+      },
+      "oneOf": [
+        {
+          "required": [
+            "person"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "person": {
+              "description": "The included images are chips of people.",
+              "type": "object",
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "vehicle"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "vehicle": {
+              "description": "The included images are chips of vehicles.",
+              "type": "object",
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "lpr"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "lpr": {
+              "description": "The included images are chips of license plates.",
+              "type": "object",
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "face"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "face": {
+              "description": "The included images are chips of faces.",
+              "type": "object",
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "gun"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "gun": {
+              "description": "The included images are chips of guns.",
+              "type": "object",
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "context": {
+      "$ref": "./AnalysisContext.json",
+      "x-stoplight": {
+        "id": "kk096mf8zt6av"
+      }
+    }
+  }
+}

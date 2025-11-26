@@ -1,0 +1,28 @@
+{
+  "title": "Sites",
+  "x-stoplight": {
+    "id": "tl0jm8ibv1tr8"
+  },
+  "description": "A collection of the site resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/SuccessCollection.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "./SiteResource.json"
+          }
+        },
+        "included": {
+          "type": "array",
+          "items": {
+            "$ref": "./CompanyResource.json"
+          }
+        }
+      }
+    }
+  ]
+}

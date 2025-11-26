@@ -1,0 +1,107 @@
+{
+  "title": "Advanced Rule",
+  "description": "An advanced rule configuration for a view. Exactly one detection configuration is required; categories and zones are optional.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "integratorId": {
+      "description": "The integrator ID for the rule.",
+      "type": "string"
+    },
+    "name": {
+      "description": "The name of the rule.",
+      "type": "string"
+    },
+    "objectType": {
+      "description": "The type of object to detect for the advanced rule.",
+      "type": "string",
+      "enum": [
+        "person",
+        "vehicle",
+        "mixed"
+      ]
+    },
+    "categories": {
+      "description": "The category of object to detect for the advanced rule.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "person",
+          "car",
+          "truck",
+          "cyclist",
+          "construction_vehicle"
+        ]
+      }
+    },
+    "zones": {
+      "description": "A list of detection zones where the detections should be performed. Each element of this array is a single detection zone. A single detection zone is an array of 2D coordinates which define the outline of the zone. Each coordinates element is an array with exactly 2 items, corresponding to the x,y position of the point.",
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "./Zone.json"
+      }
+    },
+    "loiteringDetection": {
+      "$ref": "./LoiteringDetection.json"
+    },
+    "countDetection": {
+      "$ref": "./CountDetection.json"
+    },
+    "crowdFormingDetection": {
+      "$ref": "./CrowdFormingDetection.json"
+    },
+    "gunDetection": {
+      "$ref": "./GunDetection.json"
+    },
+    "faceDetection": {
+      "$ref": "./FaceDetection.json"
+    },
+    "watchListDetection": {
+      "$ref": "./WatchListDetection.json"
+    }
+  },
+  "allOf": [
+    {
+      "required": [
+        "integratorId",
+        "name"
+      ]
+    },
+    {
+      "oneOf": [
+        {
+          "required": [
+            "loiteringDetection"
+          ]
+        },
+        {
+          "required": [
+            "countDetection"
+          ]
+        },
+        {
+          "required": [
+            "crowdFormingDetection"
+          ]
+        },
+        {
+          "required": [
+            "gunDetection"
+          ]
+        },
+        {
+          "required": [
+            "faceDetection"
+          ]
+        },
+        {
+          "required": [
+            "watchListDetection"
+          ]
+        }
+      ]
+    }
+  ]
+}

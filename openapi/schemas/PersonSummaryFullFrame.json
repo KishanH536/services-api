@@ -1,0 +1,136 @@
+{
+  "title": "Person Summary for Full-Frame Processing",
+  "x-stoplight": {
+    "id": "avcxp1wspoz6r"
+  },
+  "description": "A summary of a person analyzed a full-frame image",
+  "type": "object",
+  "examples": [
+    {
+      "boundingBox": {
+        "x1": 0.30777,
+        "y1": 0.05664,
+        "x2": 0.48144,
+        "y2": 0.93106
+      },
+      "attributes": {
+        "child": true,
+        "gender": "male",
+        "wearingHardHat": false,
+        "highlyVisible": false,
+        "hairColor": [
+          "Black"
+        ],
+        "clothesUpperBodyColor": [
+          "Blue",
+          "Red"
+        ],
+        "clothesLowerBodyColor": [
+          "Gray"
+        ]
+      }
+    }
+  ],
+  "properties": {
+    "boundingBox": {
+      "$ref": "./BoundingBox.json",
+      "x-stoplight": {
+        "id": "t0w02q2mgpbuu"
+      }
+    },
+    "faceIndex": {
+      "description": "If performed with face analysis, and if a face is correlated to the person, this will be the index of the face element from the face-analysis analytics result.",
+      "type": "number"
+    },
+    "attributes": {
+      "description": "The person attributes for the detected person.",
+      "type": "object",
+      "properties": {
+        "child": {
+          "description": "Indicates whether the person is a child",
+          "type": "boolean",
+          "x-stoplight": {
+            "id": "zalqv4kprvwm1"
+          }
+        },
+        "gender": {
+          "description": "String indicating the gender of the person",
+          "enum": [
+            "male",
+            "female",
+            "nonbinary"
+          ],
+          "x-stoplight": {
+            "id": "fi3hgk0vqa432"
+          }
+        },
+        "wearingHardHat": {
+          "description": "Indicates whether person is wearing a hard hat",
+          "type": "boolean",
+          "x-stoplight": {
+            "id": "jvgfxk2pu1ntv"
+          }
+        },
+        "highlyVisible": {
+          "description": "Indicates whether person is wearing highly-visible clothing (such as a construction vest)",
+          "type": "boolean",
+          "x-stoplight": {
+            "id": "y0gvfpglgtlgr"
+          }
+        },
+        "hairColor": {
+          "description": "Indicates the person's hair color",
+          "type": "array",
+          "items": {
+            "description": "One color detected",
+            "type": "string",
+            "x-stoplight": {
+              "id": "946626nwbb0nv"
+            }
+          },
+          "x-stoplight": {
+            "id": "q8mblkojxukqa"
+          }
+        },
+        "clothesUpperBodyColor": {
+          "description": "Indicates colors found on the person's upper body",
+          "type": "array",
+          "items": {
+            "description": "One color detected",
+            "type": "string",
+            "x-stoplight": {
+              "id": "y7e3dxb2ytrgl"
+            }
+          },
+          "x-stoplight": {
+            "id": "qrax6o1ogvccx"
+          }
+        },
+        "clothesLowerBodyColor": {
+          "description": "Indicates colors found on the person's lower body",
+          "type": "array",
+          "items": {
+            "description": "One color detected",
+            "type": "string",
+            "x-stoplight": {
+              "id": "mzlxlvq9ex4ab"
+            }
+          },
+          "x-stoplight": {
+            "id": "0pdgorul2tdk0"
+          }
+        },
+        "embedding": {
+          "description": "The embedding representing the person. Person embeddings are only included if the requesting company has the `person_analytics.embeddings` capability.",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "x-stoplight": {
+        "id": "xblb1s2zfjypo"
+      }
+    }
+  }
+}

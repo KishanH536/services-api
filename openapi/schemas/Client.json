@@ -1,0 +1,19 @@
+{
+  "title": "Client",
+  "x-stoplight": {
+    "id": "ezq6vghv9yw5g"
+  },
+  "description": "A client represents the highest level grouping that an integrator can use for their account.\n\nIf, for instance, the integrator is a company who provides security solutions for a wide variety of retailers, a client would be one of those retailers.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Success.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "$ref": "./ClientResource.json"
+        }
+      }
+    }
+  ]
+}

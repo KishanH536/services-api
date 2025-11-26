@@ -1,0 +1,81 @@
+{
+  "title": "Resource",
+  "x-stoplight": {
+    "id": "w1vvble2sb9b1"
+  },
+  "description": "\"Resource objects\" appear in a JSON:API document to represent resources.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "x-stoplight": {
+        "id": "xwr5qtj59z2ye"
+      }
+    },
+    "type": {
+      "description": "The type of data object this is",
+      "type": "string",
+      "x-stoplight": {
+        "id": "q4qzer1omnui3"
+      }
+    },
+    "attributes": {
+      "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.",
+      "type": "object",
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "relationships"
+            ],
+            "x-stoplight": {
+              "id": "begjjq56mfv7p"
+            }
+          },
+          {
+            "required": [
+              "links"
+            ],
+            "x-stoplight": {
+              "id": "e65gjwdu6a9vc"
+            }
+          },
+          {
+            "required": [
+              "id"
+            ],
+            "x-stoplight": {
+              "id": "w5z9htrsolo34"
+            }
+          },
+          {
+            "required": [
+              "type"
+            ],
+            "x-stoplight": {
+              "id": "re1iivyhq5um3"
+            }
+          }
+        ],
+        "x-stoplight": {
+          "id": "voeqmrw40k1mf"
+        }
+      },
+      "x-stoplight": {
+        "id": "xfjuvyrgjptlu"
+      }
+    },
+    "relationships": {
+      "$ref": "./Relationships.json"
+    },
+    "links": {
+      "$ref": "./Links.json"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type"
+  ]
+}

@@ -1,0 +1,530 @@
+{
+  "title": "AnalysisResultResource",
+  "description": "A single analysis result resource",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json",
+      "x-stoplight": {
+        "id": "1jt4rmpt4p3aa"
+      }
+    },
+    {
+      "properties": {
+        "id": {
+          "x-stoplight": {
+            "id": "f6rci3cpj313o"
+          }
+        },
+        "type": {
+          "const": "analysis-result",
+          "x-stoplight": {
+            "id": "w7ge59rity12c"
+          }
+        },
+        "attributes": {
+          "properties": {
+            "analysisResult": {
+              "description": "The alarm analysis result",
+              "type": "object",
+              "properties": {
+                "analytics": {
+                  "description": "Contains all analytics performed for this alarm",
+                  "type": "object",
+                  "properties": {
+                    "resultSummary": {
+                      "description": "Contains a determination summary of valid detections",
+                      "$ref": "./DetectionResult.json",
+                      "x-stoplight": {
+                        "id": "kcrduhhym0ldx"
+                      }
+                    },
+                    "resultSummaries": {
+                      "description": "For each analysis performed, a summary of the processing results",
+                      "$ref": "./ResultSummaries.json",
+                      "x-stoplight": {
+                        "id": "ikdeo1jga2k47"
+                      }
+                    },
+                    "objectDetection": {
+                      "description": "Contains analytics results from the objectDetection algorithm",
+                      "type": "object",
+                      "properties": {
+                        "boundingBoxes": {
+                          "description": "A list of bounding box collections corresponding to each image analyzed (in the order they were provided)",
+                          "type": "array",
+                          "items": {
+                            "description": "A bounding box collection for a given image",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./ObjectBoundingBox.json",
+                              "x-stoplight": {
+                                "id": "hv6cjjgh1l5ty"
+                              }
+                            },
+                            "x-stoplight": {
+                              "id": "01l4i8tiax57i"
+                            }
+                          },
+                          "x-stoplight": {
+                            "id": "6r344fho5jvay"
+                          }
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "ovpqgwy6od2g4"
+                      }
+                    },
+                    "vehicleAnalysis": {
+                      "description": "Contains list of results from the LPR and vehicle analysis algorithms, one list element per image processed",
+                      "type": "array",
+                      "items": {
+                        "description": "Result for processing of one image",
+                        "type": "object",
+                        "properties": {
+                          "vehicles": {
+                            "type": "array",
+                            "description": "A list of vehicles, one for each vehicle detected and analyzed",
+                            "items": {
+                              "$ref": "./VehicleSummaryFullFrame.json",
+                              "x-stoplight": {
+                                "id": "jqe3nsxxftsr0"
+                              }
+                            },
+                            "x-stoplight": {
+                              "id": "vm3nrotvku435"
+                            }
+                          },
+                          "plates": {
+                            "type": "array",
+                            "description": "A list of plates, one for each plate detected and analyzed",
+                            "items": {
+                              "$ref": "./PlateSummaryFullFrame.json",
+                              "x-stoplight": {
+                                "id": "d74n31uwjd4bo"
+                              }
+                            },
+                            "x-stoplight": {
+                              "id": "zvqpbjme12u0j"
+                            }
+                          }
+                        },
+                        "x-stoplight": {
+                          "id": "66drcdb8r3hum"
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "ygni6l1i0q5qe"
+                      }
+                    },
+                    "personAnalysis": {
+                      "description": "Contains list of results from the person analysis algorithms, one list element per image processed",
+                      "type": "array",
+                      "items": {
+                        "description": "Results for processing a single image. Each element is a list of persons for the processed image.",
+                        "type": "object",
+                        "properties": {
+                          "persons": {
+                            "description": "A list of persons, one for each person detected and analyzed",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./PersonSummaryFullFrame.json",
+                              "x-stoplight": {
+                                "id": "mcru21cuskeup"
+                              }
+                            },
+                            "x-stoplight": {
+                              "id": "ahsjdv19r964o"
+                            }
+                          }
+                        },
+                        "x-stoplight": {
+                          "id": "jcbd0jgndqy7b"
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "mpz8sukq9l1yb"
+                      }
+                    },
+                    "sceneClassification": {
+                      "description": "Contains list of results from the scene classification algorithm, one list element per image processed",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "description": "A summary of scene classification results for full-frame image",
+                        "properties": {
+                          "objectLabels": {
+                            "description": "A list of object labels for the image",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "x-stoplight": {
+                                "id": "0yo5lb6g0wcqv"
+                              }
+                            },
+                            "examples": [
+                              [
+                                "highway",
+                                "intersection",
+                                "parkOrGreenSpace",
+                                "perimeterOrFence"
+                              ]
+                            ],
+                            "x-stoplight": {
+                              "id": "sm81nw5qwzz3d"
+                            }
+                          }
+                        },
+                        "x-stoplight": {
+                          "id": "qr6t86gv8hwpv"
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "pnstra5k2u1z2"
+                      }
+                    },
+                    "multipleRiskAnalysis": {
+                      "description": "Contains results from the security risk and environmental hazard analysis algorithms.",
+                      "type": "object",
+                      "properties": {
+                        "riskDetected": {
+                          "description": "Describes whether a risk was detected in the images",
+                          "$ref": "./DetectionResult.json",
+                          "x-stoplight": {
+                            "id": "nwbrpjtswor3s"
+                          }
+                        },
+                        "securityRisk": {
+                          "description": "Contains results from the security risk analysis algorithm",
+                          "type": "object",
+                          "properties": {
+                            "risk": {
+                              "description": "Describes whether a risk was detected",
+                              "$ref": "./DetectionResult.json",
+                              "x-stoplight": {
+                                "id": "c6ubmz63336wr"
+                              }
+                            },
+                            "description": {
+                              "description": "Contains details about the image and, if applicable, the risk detected",
+                              "type": "string",
+                              "x-stoplight": {
+                                "id": "k6me22a8rl9gl"
+                              }
+                            },
+                            "categories": {
+                              "type": "object",
+                              "description": "Includes information about which categories are applicable to the detected security risk. Only set if `risk` is `valid`. May also not be present if `valid` is true, which indicates that the security risk is uncategorized.",
+                              "properties": {
+                                "personLyingDown": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "e0idd04lzpe6s"
+                                  }
+                                },
+                                "personFalling": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "pcx7hcy95furx"
+                                  }
+                                },
+                                "unattendedBaggage": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "vrzwq0cwumt09"
+                                  }
+                                },
+                                "crowd": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "58vkp8y5zawev"
+                                  }
+                                },
+                                "aggressiveBehavior": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "ououjfcdy4r08"
+                                  }
+                                },
+                                "personClimbing": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "xgevcphzx5hyr"
+                                  }
+                                }
+                              },
+                              "x-stoplight": {
+                                "id": "xf0ksx3z4rudq"
+                              }
+                            }
+                          },
+                          "x-stoplight": {
+                            "id": "antxxec724jp9"
+                          }
+                        },
+                        "environmentalHazard": {
+                          "description": "Contains results from the environmental hazard analysis algorithm",
+                          "type": "object",
+                          "properties": {
+                            "hazard": {
+                              "description": "Describes whether a hazard was detected",
+                              "$ref": "./DetectionResult.json",
+                              "x-stoplight": {
+                                "id": "heom2je3evidt"
+                              }
+                            },
+                            "description": {
+                              "description": "Contains details about the image and, if applicable, the hazard detected",
+                              "type": "string",
+                              "x-stoplight": {
+                                "id": "q8uqrxytdlbvz"
+                              }
+                            },
+                            "categories": {
+                              "type": "object",
+                              "x-stoplight": {
+                                "id": "zuadtpq97wqiq"
+                              },
+                              "description": "Includes information about which categories the environmental hazard detected. Only set if `hazard` is `valid`. May also not be present if `hazard` is `valid`, which indicates that the environmental hazard is uncategorized.",
+                              "properties": {
+                                "smokeFire": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "u6gmg8jakdj33"
+                                  }
+                                },
+                                "brokenWindow": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "fql6137ruwkzn"
+                                  }
+                                },
+                                "obstructedDoor": {
+                                  "type": "object",
+                                  "x-stoplight": {
+                                    "id": "141wi3fbx5vfc"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "x-stoplight": {
+                            "id": "yibb15j305gka"
+                          }
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "e6pb7o9dqtsst"
+                      }
+                    },
+                    "faceDetection": {
+                      "description": "Contains analytics results from the face detection algorithm",
+                      "type": "object",
+                      "properties": {
+                        "paravisionVersion": {
+                          "description": "The version of the Paravision face detection model used to analyze this alarm",
+                          "type": "string",
+                          "x-stoplight": {
+                            "id": "4xof66zvmoo28"
+                          }
+                        },
+                        "faces": {
+                          "description": "A list of faces corresponding to each image analyzed",
+                          "type": "array",
+                          "items": {
+                            "description": "A list of faces for a given image",
+                            "type": "array",
+                            "items": {
+                              "$ref": "./FaceSummary.json",
+                              "x-stoplight": {
+                                "id": "8gk7lz70mtr73"
+                              }
+                            },
+                            "x-stoplight": {
+                              "id": "wvsf1reg8lkp3"
+                            }
+                          },
+                          "x-stoplight": {
+                            "id": "h1lpa49rvl6cm"
+                          }
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "rqxpcuamo7mtm"
+                      }
+                    }
+                  },
+                  "x-stoplight": {
+                    "id": "j2rjdmcp5vv3f"
+                  }
+                },
+                "sceneChange": {
+                  "description": "Describes results from the scene change detection algorithm",
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "description": "Describes whether a scene change was detected",
+                      "$ref": "./DetectionResult.json",
+                      "x-stoplight": {
+                        "id": "y0dxmkwgh4ioy"
+                      }
+                    },
+                    "details": {
+                      "description": "Contains details about the scene change detection if a scene change was detected",
+                      "type": "object",
+                      "properties": {
+                        "blur": {
+                          "description": "Describes whether the scene change was due to blur",
+                          "type": "boolean",
+                          "x-stoplight": {
+                            "id": "53q8j672j17qk"
+                          }
+                        },
+                        "imageShift": {
+                          "description": "Describes whether the scene change was due to the view shifting slightly / otherwise having a near total obstruction",
+                          "type": "boolean",
+                          "x-stoplight": {
+                            "id": "t4li55lhuzkzs"
+                          }
+                        }
+                      },
+                      "x-stoplight": {
+                        "id": "52qkhooevooy1"
+                      }
+                    },
+                    "reason": {
+                      "description": "Describes the reason for not performing the scene change detection",
+                      "type": "object",
+                      "x-stoplight": {
+                        "id": "5o30wtopsx9bz"
+                      }
+                    },
+                    "reference": {
+                      "description": "Contains the reference image information used for scene change detection. Will contain either a `url` or `id` property, depending on how the reference image was provided.",
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "description": "URL of the reference image",
+                          "type": "string",
+                          "x-stoplight": {
+                            "id": "g133crlznzad1"
+                          }
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ],
+                      "x-stoplight": {
+                        "id": "llidd7mpirkss"
+                      }
+                    }
+                  },
+                  "x-stoplight": {
+                    "id": "carsl12tdaece"
+                  }
+                }
+              },
+              "x-stoplight": {
+                "id": "5b6mr0hlaplua"
+              }
+            },
+            "createdAt": {
+              "description": "The date and time when this resource was created",
+              "type": "string",
+              "format": "date-time",
+              "x-stoplight": {
+                "id": "i2c8tjbtmz3bn"
+              }
+            },
+            "companyId": {
+              "description": "The ID of the company that owns this analysis result",
+              "type": "string",
+              "x-stoplight": {
+                "id": "7hpp8mvhjvadm"
+              }
+            },
+            "siteId": {
+              "description": "The ID of the site that is associated with this analysis result",
+              "type": "string",
+              "x-stoplight": {
+                "id": "ixhbpyi9afq1t"
+              }
+            },
+            "viewId": {
+              "description": "The ID of the view that is associated with this analysis result",
+              "type": "string",
+              "x-stoplight": {
+                "id": "g5brkx7tlhwyd"
+              }
+            },
+            "viewConfig": {
+              "description": "The configuration of the view at the time this analysis result was created",
+              "type": "object",
+              "properties": {
+                "masks": {
+                  "description": "A list of masks configured for the view",
+                  "type": "array",
+                  "items": {
+                    "$ref": "./Mask.json"
+                  }
+                },
+                "features": {
+                  "description": "An object containing an attribute for each enabled feature. Each of these attributes is itself an object containing information related to the configuration of the enabled feature.",
+                  "$ref": "./FeaturesResponse.json"
+                }
+              }
+            },
+            "originalImages": {
+              "$ref": "./jsonapi/Links.json",
+              "x-stoplight": {
+                "id": "ai4x3085d5woy"
+              }
+            }
+          },
+          "x-stoplight": {
+            "id": "4di46l1tf82eh"
+          }
+        }
+      },
+      "x-stoplight": {
+        "id": "a60we24o56u3s"
+      }
+    }
+  ],
+  "examples": [
+    {
+      "type": "analysis-result",
+      "id": "0198662e-ca51-7768-9b69-9d547b230cc4",
+      "attributes": {
+        "analysisResult": {
+          "analytics": {
+            "faceDetection": {
+              "faces": [
+                [
+                  {
+                    "box": {
+                      "y1": 0.16649,
+                      "x1": 0.2352,
+                      "y2": 0.78229,
+                      "x2": 0.6906
+                    },
+                    "acceptability": 1,
+                    "quality": 0.84
+                  }
+                ]
+              ],
+              "paravisionVersion": "5"
+            },
+            "resultSummary": "valid"
+          }
+        },
+        "createdAt": "2025-08-01T15:10:00.166Z",
+        "companyId": "700c6743-6283-48c2-8d97-6ea58dfc5c6c",
+        "siteId": "5e80dae6-5bbb-4452-b329-1f137d00f67d",
+        "viewId": "6c95b989-c6db-4594-b3b3-32de0d1c25c6",
+        "originalImages": {
+          "self": "/services/analyses/0198662e-ca51-7768-9b69-9d547b230cc4/original-images"
+        }
+      }
+    }
+  ]
+}

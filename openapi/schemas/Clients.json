@@ -1,0 +1,22 @@
+{
+  "title": "Clients",
+  "x-stoplight": {
+    "id": "rkpbn556sytje"
+  },
+  "description": "A collection of the client resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/SuccessCollection.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "./ClientResource.json"
+          }
+        }
+      }
+    }
+  ]
+}

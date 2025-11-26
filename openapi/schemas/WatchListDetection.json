@@ -1,0 +1,44 @@
+{
+  "title": "WatchList Detection",
+  "description": "Watch list detection configuration for the rule.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "alertList": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "./WatchListItemResource.json"
+      }
+    },
+    "ignoreList": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "./WatchListItemResource.json"
+      }
+    }
+  },
+  "examples": [
+    {
+      "alertList": [
+        {
+          "type": "watchlist-item",
+          "id": "de3c44cb-ca05-479d-befa-311fc5de131e",
+          "links": {
+            "http://calipsa.io/relation/current-image": "/watchlists/image?path=de3c44cb-ca05-479d-befa-311fc5de131e.jpg"
+          }
+        }
+      ],
+      "ignoreList": [
+        {
+          "type": "watchlist-item",
+          "id": "c8e945ef-9e01-47f6-a8dd-9c09bc1c71bf",
+          "links": {
+            "http://calipsa.io/relation/current-image": "/watchlists/image?path=c8e945ef-9e01-47f6-a8dd-9c09bc1c71bf.jpg"
+          }
+        }
+      ]
+    }
+  ]
+}

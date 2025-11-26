@@ -1,0 +1,22 @@
+{
+  "title": "DisplayTokens",
+  "x-stoplight": {
+    "id": "q5enjqycmljsv"
+  },
+  "description": "A collection of the UI display tokens resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/SuccessCollection.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "./DisplayTokenResource.json"
+          }
+        }
+      }
+    }
+  ]
+}

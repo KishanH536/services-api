@@ -1,0 +1,49 @@
+{
+  "title": "Plate Summary",
+  "description": "A summary of a license plate analysis",
+  "type": "object",
+  "examples": [
+    {
+      "quality": "readable",
+      "text": "2U4355",
+      "ranking": 1,
+      "rating": "high",
+      "state": "SD"
+    }
+  ],
+  "properties": {
+    "quality": {
+      "description": "A string indicating the quality of the plate image ('readable' or 'unreadable'). This is not a super reliable property, so consider using `rating` instead.",
+      "type": "string",
+      "deprecated": true
+    },
+    "text": {
+      "description": "A string representing the text of the plate",
+      "type": "string"
+    },
+    "ranking": {
+      "type": "number",
+      "x-stoplight": {
+        "id": "uf71rkupvgky8"
+      },
+      "minimum": 0,
+      "maximum": 1,
+      "description": "A number between 0 and 1 (inclusive) which indicates the quality of the text result for the plate. The higher the number, the better the quality."
+    },
+    "rating": {
+      "x-stoplight": {
+        "id": "3dlr5ytpui87n"
+      },
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "A summary that indicates the OCR quality of the text of the plate."
+    },
+    "state": {
+      "description": "A string indicating the issuing state for the plate",
+      "type": "string"
+    }
+  }
+}

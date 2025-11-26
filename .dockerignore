@@ -1,0 +1,6 @@
+__tests__
+.DS_Store
+.clinic
+.git
+node_modules
+test

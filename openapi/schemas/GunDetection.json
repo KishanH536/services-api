@@ -1,0 +1,5 @@
+{
+  "title": "Gun Detection",
+  "description": "Gun detection configuration for the rule.",
+  "type": "object"
+}

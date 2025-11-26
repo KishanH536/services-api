@@ -1,0 +1,180 @@
+{
+  "title": "SiteResource",
+  "x-stoplight": {
+    "id": "5rtqzamsannrf"
+  },
+  "description": "A single site resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/Resource.json"
+    },
+    {
+      "properties": {
+        "id": {},
+        "type": {
+          "const": "site"
+        },
+        "attributes": {
+          "properties": {
+            "integratorId": {
+              "description": "The integrator-supplied ID associated with this site",
+              "$ref": "./IntegratorId.json"
+            },
+            "displayName": {
+              "description": "The name of the site as displayed on a web page",
+              "$ref": "./DisplayName.json"
+            },
+            "timeZone": {
+              "description": "The name of the site's time zone (as listed in the official tz database)",
+              "type": "string",
+              "examples": [
+                "America/New_York",
+                "Europe/London"
+              ]
+            },
+            "readOnly": {
+              "description": "When a site is a shared site, this attribute indicates the permission level of the user with whom the site has been shared. Site sharing no longer exists for any customers, and this property will be removed in the future.",
+              "type": "boolean",
+              "deprecated": true
+            }
+          }
+        },
+        "relationships": {
+          "properties": {
+            "company": {
+              "description": "A reference to a company resource describing the company associated with this site. This relationship is deprecated.",
+              "type": "object",
+              "deprecated": true,
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "id"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "The type of this relationship object - must be \"company\""
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The unique ID of the associated company"
+                    }
+                  }
+                }
+              }
+            },
+            "ownedBy": {
+              "description": "A reference to a company resource describing the company to which this site belongs. This relationship is deprecated.",
+              "type": "object",
+              "deprecated": true,
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "id"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "The type of this relationship object - must be \"company\""
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The unique ID of the associated company"
+                    }
+                  }
+                }
+              }
+            },
+            "sharedWith": {
+              "description": "A reference to a company resource describing the company of the user with whom this site has been shared. This relationship is deprecated.",
+              "type": "object",
+              "deprecated": true,
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of this relationship object - must be \"company\""
+                      },
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The unique ID of the associated company"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "id": "d6eae718-6947-4844-b3eb-4508386b1ba3",
+      "type": "site",
+      "attributes": {
+        "integratorId": "Default Integrator ID",
+        "displayName": "Default Display Name",
+        "timezone": "America/New_York",
+        "readOnly": true
+      },
+      "relationships": {
+        "ownedBy": {
+          "data": {
+            "id": "d6eae718-6947-4844-b3eb-4508386b1ba3",
+            "type": "company"
+          }
+        }
+      },
+      "links": {
+        "self": "/services/sites/d113ec1b-8e90-4a47-946a-0934074a8e36"
+      }
+    },
+    {
+      "id": "d6eae718-6947-7833-b3eb-4508386b1ba3",
+      "type": "site",
+      "attributes": {
+        "integratorId": "Default Integrator ID",
+        "displayName": "Default Display Name for Shared Site",
+        "timezone": "America/Chicago"
+      },
+      "relationships": {
+        "sharedWith": {
+          "data": [
+            {
+              "id": "d6eae718-6947-4844-b3eb-4508386b1ba3",
+              "type": "company"
+            },
+            {
+              "id": "ac264c6f-0671-4099-b271-b5bd5972d37e",
+              "type": "company"
+            }
+          ]
+        }
+      },
+      "links": {
+        "self": "/services/sites/d113ec1b-8e90-4a47-946a-0934074a8e36"
+      }
+    }
+  ]
+}

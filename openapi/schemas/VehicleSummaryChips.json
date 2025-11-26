@@ -1,0 +1,30 @@
+{
+  "title": "Vehicle Summary for Chip Processing",
+  "description": "A summary of a vehicle analyzed from a chip image",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "./VehicleSummary.json"
+    },
+    {
+      "properties": {
+        "embedding": {
+          "description": "An embedding vector for the vehicle. Vehicle embeddings are only included if the requesting company has the `vehicle_analytics.embeddings` capability.",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "vehicleType": "sedan",
+      "color": [
+        "black"
+      ],
+      "makeModel": "toyota_rav4"
+    }
+  ]
+}

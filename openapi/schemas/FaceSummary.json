@@ -1,0 +1,29 @@
+{
+  "title": "Face Summary",
+  "description": "A summary of a face detected in an image",
+  "type": "object",
+  "properties": {
+    "acceptability": {
+      "description": "An assessment of the likelihood of a real human face in the bounding box",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "quality": {
+      "description": "An assessment of how good the face is for face recognition and matching purposes",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "box": {
+      "$ref": "./BoundingBox.json"
+    },
+    "embedding": {
+      "description": "The embedding representing the face",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  }
+}

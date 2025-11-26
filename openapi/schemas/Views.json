@@ -1,0 +1,19 @@
+{
+  "title": "Views",
+  "description": "A collection of the view resource.",
+  "allOf": [
+    {
+      "$ref": "./jsonapi/SuccessCollection.json"
+    },
+    {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "./ViewResource.json"
+          }
+        }
+      }
+    }
+  ]
+}
