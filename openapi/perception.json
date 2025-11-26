@@ -35,7 +35,7 @@
                 ],
                 "properties": {
                   "options": {
-                    "$ref": "./schemas/v2/FullFrameAnalysisOptions.json"
+                    "$ref": "./schemas/v2/AnalysisContext.json"
                   },
                   "images": {
                     "description": "A series of images in JPEG format. Minimum image dimensions are 320x240.",
